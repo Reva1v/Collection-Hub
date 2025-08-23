@@ -1,0 +1,227 @@
+[
+  {
+    "id": "1",
+    "description": "The Original Green Monster Energy",
+    "image": "https://web-assests.monsterenergy.com/mnst/86be6554-4e12-435b-b8d0-bc492e68e436.png"
+  },
+  {
+    "id": "2",
+    "description": "The Original Monster Energy Super-Premium Import",
+    "image": "https://web-assests.monsterenergy.com/mnst/9e0f35fc-fc2f-456f-a6f5-4e7110e96967.png"
+  },
+  {
+    "id": "3",
+    "description": "Zero Sugar Monster Energy",
+    "image": "https://web-assests.monsterenergy.com/mnst/e6e3cf70-f77e-4d4d-bd51-f2448af390ce.png"
+  },
+  {
+    "id": "4",
+    "description": "Monster Energy Reserve White Pineapple",
+    "image": "https://web-assests.monsterenergy.com/mnst/57c5666f-c8b8-422b-8af1-a35ec1948e51.png"
+  },
+  {
+    "id": "5",
+    "description": "Monster Energy Reserve Orange Dreamsicle",
+    "image": "https://web-assests.monsterenergy.com/mnst/ecbd5c80-57d1-4e5a-887f-80b1ccb6c585.png"
+  },
+  {
+    "id": "6",
+    "description": "Monster Energy Reserve Peaches n’ Crème",
+    "image": "https://web-assests.monsterenergy.com/mnst/64017997-879a-4aee-bb3e-47c1032e21a2.png"
+  },
+  {
+    "id": "7",
+    "description": "The Original Lo-Carb Monster Energy",
+    "image": "https://web-assests.monsterenergy.com/mnst/68cec0c3-fab0-4d39-9cea-1dd757a84ab7.png"
+  },
+  {
+    "id": "8",
+    "description": "Monster Energy Nitro Super Dry",
+    "image": "https://web-assests.monsterenergy.com/mnst/03129094-b0f6-41d9-b188-ab0677afdf2c.png"
+  },
+  {
+    "id": "9",
+    "description": "Monster Energy Assault",
+    "image": "https://web-assests.monsterenergy.com/mnst/59ba5327-a832-44cb-ace1-f981531b5777.png"
+  },
+  {
+    "id": "10",
+    "description": "Zero Ultra a.k.a. The White Monster",
+    "image": "https://web-assests.monsterenergy.com/mnst/5587a01b-3c83-42f7-a741-b29a1d534409.png"
+  },
+  {
+    "id": "11",
+    "description": "Zero-Sugar Ultra Vice Guava",
+    "image": "https://web-assests.monsterenergy.com/mnst/429ee7e4-6dd2-4a91-b2d4-b3f02ae88da1.png"
+  },
+  {
+    "id": "12",
+    "description": "Zero-Sugar Ultra Fantasy Ruby Red",
+    "image": "https://web-assests.monsterenergy.com/mnst/b51a3dd9-c4b8-4e12-82f4-1ea2dd25eb2a.png"
+  },
+  {
+    "id": "13",
+    "description": "Zero-Sugar Ultra Peachy Keen",
+    "image": "https://web-assests.monsterenergy.com/mnst/38a1d9c7-b926-41a6-a0cd-5020b83da8e9.png"
+  },
+  {
+    "id": "14",
+    "description": "Zero-Sugar Ultra Watermelon",
+    "image": "https://web-assests.monsterenergy.com/mnst/1cb31b0a-fd8d-42b4-8e3b-e9fcb0f6bb80.png"
+  },
+  {
+    "id": "15",
+    "description": "Zero-Sugar Ultra Gold",
+    "image": "https://web-assests.monsterenergy.com/mnst/29f553fd-ac10-434b-a9b9-12eb40e606c8.png"
+  },
+  {
+    "id": "16",
+    "description": "Zero-Sugar Ultra Sunrise",
+    "image": "https://web-assests.monsterenergy.com/mnst/c66034b5-eee7-4bbe-8283-6f6beb051872.png"
+  },
+  {
+    "id": "17",
+    "description": "Zero-Sugar Ultra Rosá",
+    "image": "https://web-assests.monsterenergy.com/mnst/d8a379e2-9213-4b9f-9520-b6a562b126f9.png"
+  },
+  {
+    "id": "18",
+    "description": "Zero-Sugar Ultra Red",
+    "image": "https://web-assests.monsterenergy.com/mnst/1bc46890-6c15-4c60-aa46-a6ea7e9c06db.png"
+  },
+  {
+    "id": "19",
+    "description": "Zero-Sugar Ultra Blue a.k.a. The Blue Monster",
+    "image": "https://web-assests.monsterenergy.com/mnst/b13d441c-b02a-4e42-bc05-e629a1907e14.png"
+  },
+  {
+    "id": "20",
+    "description": "Zero-Sugar Ultra Black",
+    "image": "https://web-assests.monsterenergy.com/mnst/172d2ac5-a1fd-40f4-a477-5d045d62982e.png"
+  },
+  {
+    "id": "21",
+    "description": "Zero-Sugar Ultra Strawberry Dreams",
+    "image": "https://web-assests.monsterenergy.com/mnst/f7c37e77-9b5d-46ae-83ee-8d8cd27042b3.png"
+  },
+  {
+    "id": "22",
+    "description": "Zero-Sugar Ultra Paradise",
+    "image": "https://web-assests.monsterenergy.com/mnst/bc17ca83-d4e3-4c5d-a8ad-414bc3e1b2d8.png"
+  },
+  {
+    "id": "23",
+    "description": "Zero-Sugar Ultra Fiesta Mango",
+    "image": "https://web-assests.monsterenergy.com/mnst/b4aa6355-45ef-4a5e-8f27-c17dbba50003.png"
+  },
+  {
+    "id": "24",
+    "description": "Zero-Sugar Ultra Blue Hawaiian",
+    "image": "https://web-assests.monsterenergy.com/mnst/a63f50b5-dc2f-4af0-8fc9-1da6568e773f.png"
+  },
+  {
+    "id": "25",
+    "description": "Java Monster Mean Bean",
+    "image": "https://web-assests.monsterenergy.com/mnst/25ba7d1a-5df2-4199-9510-4b1d98c496f9.png"
+  },
+  {
+    "id": "26",
+    "description": "Java Monster Loca Moca",
+    "image": "https://web-assests.monsterenergy.com/mnst/abb62e59-fbe2-4ef1-a0c9-4812d6928ce8.png"
+  },
+  {
+    "id": "27",
+    "description": "Java Monster Salted Caramel",
+    "image": "https://web-assests.monsterenergy.com/mnst/ab4bb4d0-fef6-4238-821f-fb475c7684fb.png"
+  },
+  {
+    "id": "28",
+    "description": "Java Monster Irish Crème",
+    "image": "https://web-assests.monsterenergy.com/mnst/87fba31e-3680-446a-8d86-a714a91d7fe8.png"
+  },
+  {
+    "id": "29",
+    "description": "Café Latte",
+    "image": "https://web-assests.monsterenergy.com/mnst/3eaef620-a889-4f49-9c80-15d10c0e94e0.png"
+  },
+  {
+    "id": "30",
+    "description": "Killer Brew Mean Bean",
+    "image": "https://web-assests.monsterenergy.com/mnst/aa871ebb-aa73-4f9b-99ab-e66acd3ac07d.png"
+  },
+  {
+    "id": "31",
+    "description": "Killer Brew Loca Moca",
+    "image": "https://web-assests.monsterenergy.com/mnst/74d3f453-83d1-49e8-b8d6-8c667121b794.png"
+  },
+  {
+    "id": "32",
+    "description": "Java Monster Triple Shot French Vanilla",
+    "image": "https://web-assests.monsterenergy.com/mnst/f3a50753-792d-44c7-8753-6bc3a623e7b8.png"
+  },
+  {
+    "id": "33",
+    "description": "Java Monster Triple Shot Mocha",
+    "image": "https://web-assests.monsterenergy.com/mnst/b83f7846-80f2-4548-8057-b330f39be2c8.png"
+  },
+  {
+    "id": "34",
+    "description": "Juice Monster Mango Loco",
+    "image": "https://web-assests.monsterenergy.com/mnst/bcbf7fc0-05e9-4d0d-933c-30eabf9ca620.png"
+  },
+  {
+    "id": "35",
+    "description": "Juice Monster Pacific Punch",
+    "image": "https://web-assests.monsterenergy.com/mnst/52ec68fb-cd25-4cbb-9bf0-5f38931e5875.png"
+  },
+  {
+    "id": "36",
+    "description": "Juice Monster Pipeline Punch",
+    "image": "https://web-assests.monsterenergy.com/mnst/6aa8ff45-fcd8-4c9d-b2b2-d15a69a1d465.png"
+  },
+  {
+    "id": "37",
+    "description": "Juice Monster Rio Punch",
+    "image": "https://web-assests.monsterenergy.com/mnst/664fb7f7-9ad2-4c36-923d-70cd767e0d9f.png"
+  },
+  {
+    "id": "38",
+    "description": "Juice Monster Aussie Style Lemonade",
+    "image": "https://web-assests.monsterenergy.com/mnst/e56044fb-1eb2-4cbd-a882-61e7e810277b.png"
+  },
+  {
+    "id": "39",
+    "description": "Juice Monster Khaotic",
+    "image": "https://web-assests.monsterenergy.com/mnst/6d59ba22-dc0e-4a05-816c-66de5d2c9701.png"
+  },
+  {
+    "id": "40",
+    "description": "Juice Monster Viking Berry",
+    "image": "https://web-assests.monsterenergy.com/mnst/c04d7602-9590-4f16-98ed-db7c023e8c21.png"
+  },
+  {
+    "id": "41",
+    "description": "Rehab Monster Strawberry Lemonade",
+    "image": "https://web-assests.monsterenergy.com/mnst/83367fa7-5fdd-42f3-b096-63b73fc2e2c1.png"
+  },
+  {
+    "id": "42",
+    "description": "Rehab Monster Tea & Lemonade",
+    "image": "https://web-assests.monsterenergy.com/mnst/d9cfa97e-c911-4859-88dd-192b03b8e5a2.png"
+  },
+  {
+    "id": "43",
+    "description": "Rehab Monster Peach Tea",
+    "image": "https://web-assests.monsterenergy.com/mnst/cb9a5b60-ac4d-4a56-aa4d-23417a22e144.png"
+  },
+  {
+    "id": "44",
+    "description": "Rehab Monster Wild Berry",
+    "image": "https://web-assests.monsterenergy.com/mnst/f44f8b1b-2480-4d68-8938-1b5d859be6e3.png"
+  },
+  {
+    "id": "45",
+    "description": "Rehab Monster Green Tea",
+    "image": "https://web-assests.monsterenergy.com/mnst/384bc104-0db7-48e5-a528-905d245be4d1.png"
+  }
+]
