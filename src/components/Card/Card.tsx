@@ -6,6 +6,7 @@ import CheckCardPopup from "../CheckCardPopup/CheckCardPopup.tsx";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faBan, faCheck, faQuestion} from '@fortawesome/free-solid-svg-icons';
 import {useEnergetic} from "../../contexts/EnergeticContext.tsx";
+import {createPortal} from "react-dom";
 
 interface CardProps {
     energetic: Energetic
@@ -53,16 +54,17 @@ const Card: React.FC<CardProps> = ({energetic}) => {
                     <FontAwesomeIcon icon={statusIcon.icon}/>
                 </div>
 
-                <img src={energetic.image} alt="energetic-img" width="120"/>
+                <img src={energetic.image} alt={energetic.description} width="120"/>
                 <h1>MONSTER</h1>
                 <h2>{energetic.description}</h2>
             </div>
-            {isPopupOpen && (
+            {isPopupOpen && createPortal(
                 <CheckCardPopup
                     energetic={energetic}
                     onClose={closePopup}
                     onStatusChange={handleStatusChange}
-                />
+                />,
+                document.body
             )}
         </>
     )
