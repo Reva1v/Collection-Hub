@@ -1,13 +1,10 @@
 import * as React from 'react'
 import styles from './Home.module.css'
 import CardList from "../../components/CardList/CardList.tsx";
-import energeticsData from "../../assets/data/energetics.json";
-import type {Energetic} from "../../types/Energetic.ts";
 import ClickSpark from '../../components/ClickSpark/ClickSpark.tsx';
+import Header from "../../components/Header/Header.tsx";
 
 const Home: React.FC = () => {
-
-    const energetics = energeticsData as Energetic[];
 
     return (
         <ClickSpark
@@ -17,11 +14,12 @@ const Home: React.FC = () => {
             sparkCount={8}
             duration={400}
         >
-        <div className={styles['home']}>
-            <div className={styles['main-board']}>
-                <CardList energetics={energetics}/>
+            <Header/>
+            <div className={styles['home']}>
+                <div className={styles['main-board']}>
+                    <CardList/>
+                </div>
             </div>
-        </div>
         </ClickSpark>
     )
 }
