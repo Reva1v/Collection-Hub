@@ -53,20 +53,22 @@ export const EnergeticProvider: React.FC<EnergeticProviderProps> = ({ children }
     };
 
     const updateCollectStatus = (id: string, status: CollectStatus) => {
-        const updatedEnergetics = allEnergetics.map(energetic =>
-            energetic.id === id
-                ? { ...energetic, collect: status }
-                : energetic
-        );
+        setAllEnergetics(prevEnergetics => {
+            const updatedEnergetics = prevEnergetics.map(energetic =>
+                energetic.id === id
+                    ? { ...energetic, collect: status }
+                    : energetic
+            );
 
-        setAllEnergetics(updatedEnergetics);
+            // Сохраняем изменения в localStorage
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedEnergetics));
+            } catch (error) {
+                console.error('Error saving to localStorage:', error);
+            }
 
-        // Сохраняем изменения в localStorage
-        try {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedEnergetics));
-        } catch (error) {
-            console.error('Error saving to localStorage:', error);
-        }
+            return updatedEnergetics;
+        });
     };
 
     return (
