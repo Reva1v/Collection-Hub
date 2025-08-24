@@ -5,6 +5,7 @@ import {useState} from "react";
 import CheckCardPopup from "../CheckCardPopup/CheckCardPopup.tsx";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faBan, faCheck, faQuestion} from '@fortawesome/free-solid-svg-icons';
+import {useEnergetic} from "../../contexts/EnergeticContext.tsx";
 
 interface CardProps {
     energetic: Energetic
@@ -12,20 +13,25 @@ interface CardProps {
 
 const Card: React.FC<CardProps> = ({energetic}) => {
     const [isPopupOpen, setIsPopupOpen] = useState(false);
-    const [collectStatus, setCollectStatus] = useState<'collected' | 'not-collected' | 'will-not-collect' | 'unknown'>('unknown');
+    const { updateCollectStatus } = useEnergetic();
 
     const openPopup = () => setIsPopupOpen(true);
     const closePopup = () => setIsPopupOpen(false);
 
+    const handleStatusChange = (status: 'unknown' | 'collected' | 'will-not-collect') => {
+        updateCollectStatus(energetic.id, status);
+        closePopup();
+    };
+
     const getStatusIcon = () => {
-        switch (collectStatus) {
+        switch (energetic.collect) {
             case 'collected':
                 return {
                     icon: faCheck,
                     className: styles['status-collected'],
                     cardClassName: styles['status-collected-card']
                 };
-            case 'not-collected':
+            case 'unknown':
                 return {icon: faQuestion, className: styles['status-unknown']};
             case 'will-not-collect':
                 return {
@@ -55,8 +61,7 @@ const Card: React.FC<CardProps> = ({energetic}) => {
                 <CheckCardPopup
                     energetic={energetic}
                     onClose={closePopup}
-                    currentStatus={collectStatus}
-                    onStatusChange={setCollectStatus}
+                    onStatusChange={handleStatusChange}
                 />
             )}
         </>

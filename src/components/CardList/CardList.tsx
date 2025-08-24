@@ -1,13 +1,16 @@
 import React from 'react';
 import Card from '../Card/Card.tsx';
-import type {Energetic} from '../../types/Energetic.ts';
+// import type {Energetic} from '../../types/Energetic.ts';
 import styles from './CardList.module.css';
+import {useEnergetic} from "../../contexts/EnergeticContext.tsx";
 
-interface CardListProps {
-    energetics: Energetic[];
-}
+// interface CardListProps {
+//     energetics: Energetic[];
+// }
 
-const CardList: React.FC<CardListProps> = ({energetics}) => {
+const CardList: React.FC = () => {
+    const { energetics } = useEnergetic();
+
     return (
         <ul className={styles['card-list']} >
             {energetics.map((energetic) => (
