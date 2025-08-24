@@ -16,7 +16,7 @@
     padding: 8px 16px;
     border: 2px solid #333;
     background: transparent;
-    color: #333;
+    color: #6e6e6e;
     border-radius: 25px;
     cursor: pointer;
     font-size: 14px;
@@ -36,6 +36,21 @@
     border-color: #00a651;
     color: white;
     box-shadow: 0 4px 12px rgba(0, 166, 81, 0.3);
+}
+
+@keyframes pulseGreen {
+    0% {
+        transform: translateY(-2px) scale(1);
+        box-shadow: 0 4px 12px rgba(0, 166, 81, 0.3);
+    }
+    50% {
+        transform: translateY(-3px) scale(1.05);
+        box-shadow: 0 6px 20px rgba(0, 166, 81, 0.4);
+    }
+    100% {
+        transform: translateY(-2px) scale(1);
+        box-shadow: 0 4px 12px rgba(0, 166, 81, 0.3);
+    }
 }
 
 .filter__button.active:hover {
