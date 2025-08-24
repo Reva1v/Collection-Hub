@@ -22,7 +22,10 @@ const CheckCardPopup: React.FC<CheckCardPopupProps> = ({energetic, onClose, onSt
         <div className={styles['popup-overlay']} onClick={onClose}>
             <div className={styles['popup-content']} onClick={(e) => e.stopPropagation()}>
                 <button className={styles['close-button']} onClick={onClose}>×</button>
-                <h2>{energetic.description}</h2>
+                <div className={styles['popup-content__header']}>
+                    <h2>{energetic.description}</h2>
+                    <img src={energetic.image} alt="energetic-img" width="30" />
+                </div>
 
                 <button
                     className={`${styles['popup-button']}`}
