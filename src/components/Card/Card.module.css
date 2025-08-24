@@ -62,4 +62,34 @@
     border-color: #888;
 }
 
+@media (max-width: 400px){
+    .card{
+        max-width: 150px;
+        min-width: 150px;
+        padding: 10px 0;
+    }
+
+    .card img{
+        width: 50px;
+    }
+
+    .card h1{
+        font-size: 1em;
+        margin-bottom: 5px;
+    }
+
+    .card h2{
+        font-size: 0.7em;
+        margin-top: 5px;
+        margin-bottom: 0;
+    }
+
+    .status-icon{
+        width: 30px;
+        height: 30px;
+        top: 7px;
+        right: 7px
+    }
+}
+
 

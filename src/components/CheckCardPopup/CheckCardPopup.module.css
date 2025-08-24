@@ -131,7 +131,8 @@
     box-shadow: 20px 20px 20px 30px #676767;
 }
 
-.active {
-    background: #333 !important;
-    border: 2px solid #00ff00 !important;
+@media (max-width: 400px){
+    .popup-content{
+        padding: 40px 20px;
+    }
 }

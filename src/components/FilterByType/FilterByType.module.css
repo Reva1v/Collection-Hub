@@ -1,0 +1,57 @@
+.filter {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.filter__buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
+.filter__button {
+    padding: 8px 16px;
+    border: 2px solid #333;
+    background: transparent;
+    color: #333;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.filter__button:hover {
+    background: #333;
+    color: white;
+    /*transform: translateY(-2px);*/
+}
+
+.filter__button.active {
+    background: #00a651;
+    border-color: #00a651;
+    color: white;
+    box-shadow: 0 4px 12px rgba(0, 166, 81, 0.3);
+}
+
+.filter__button.active:hover {
+    background: #008a44;
+    border-color: #008a44;
+    /*transform: translateY(-2px);*/
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .filter__buttons {
+        justify-content: center;
+    }
+
+    .filter__button {
+        font-size: 12px;
+        padding: 6px 12px;
+    }
+}

@@ -1,7 +1,11 @@
 #root {
-  /*width: 1920px;*/
-  /*height: 100vh;*/
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+}
+
+@media (max-width: 400px){
+  #root{
+    padding: 0.2rem;
+  }
 }
