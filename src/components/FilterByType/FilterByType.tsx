@@ -1,12 +1,14 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useEnergetic } from "../../contexts/EnergeticContext";
 import styles from './FilterByType.module.css';
 
 const FilterByType: React.FC = () => {
     const { allEnergetics, selectedType, setSelectedType, getUniqueTypes } = useEnergetic();
+    const [isAnimating, setIsAnimating] = useState(false);
 
     const uniqueTypes = getUniqueTypes();
 
+    // Вычисляем количество для каждого типа только один раз
     const typeCounts = useMemo(() => {
         const counts: Record<string, number> = {};
         allEnergetics.forEach(item => {
@@ -15,21 +17,31 @@ const FilterByType: React.FC = () => {
         return counts;
     }, [allEnergetics]);
 
+    const handleFilterChange = (type: string) => {
+        if (type === selectedType) return;
+
+        setIsAnimating(true);
+        setSelectedType(type);
+
+        // Убираем индикатор анимации через короткое время
+        setTimeout(() => setIsAnimating(false), 300);
+    };
+
     return (
-        <div className={styles.filter}>
+        <div className={`${styles.filter} ${isAnimating ? styles.animating : ''}`}>
             <div className={styles.filter__buttons}>
                 <button
                     className={`${styles.filter__button} ${selectedType === 'all' ? styles.active : ''}`}
-                    onClick={() => setSelectedType('all')}
+                    onClick={() => handleFilterChange('all')}
                 >
-                    Все ({allEnergetics.length})
+                    All ({allEnergetics.length})
                 </button>
 
                 {uniqueTypes.map(type => (
                     <button
                         key={type}
                         className={`${styles.filter__button} ${selectedType === type ? styles.active : ''}`}
-                        onClick={() => setSelectedType(type)}
+                        onClick={() => handleFilterChange(type)}
                     >
                         {type} ({typeCounts[type]})
                     </button>
