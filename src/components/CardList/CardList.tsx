@@ -1,7 +1,9 @@
+"use client";
+
 import React, {useState, useEffect, useRef} from 'react';
-import Card from '../Card/Card.tsx';
+import Card from '@/components/Card/Card';
 import styles from './CardList.module.css';
-import { useEnergetic } from "../../contexts/EnergeticContext.tsx";
+import { useEnergetic } from "@/contexts/EnergeticContext";
 
 const CardList: React.FC = () => {
     const { energetics } = useEnergetic();

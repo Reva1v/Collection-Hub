@@ -1,6 +1,6 @@
 import * as React from "react";
 import styles from './CheckCardPopup.module.css';
-import type {Energetic} from "../../types/Energetic.ts";
+import type {Energetic} from "@/types/Energetic";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faBan, faCheck, faXmark} from '@fortawesome/free-solid-svg-icons'
 

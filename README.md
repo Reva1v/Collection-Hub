@@ -1,12 +1,19 @@
-# React + Vite
+# Collection Hub
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A small Next.js application that helps you keep track of items in your collection.  
+Currently, the app supports a collection of **Monster Energy drinks**, where you can mark which ones you already own.
 
-Currently, two official plugins are available:
+## Features
+- 📦 Manage your personal collection
+- ✅ Mark collected items
+- 🧃 Currently includes Monster Energy drinks collection
+- ⚡ Built with Next.js, TypeScript, and React
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Getting Started
+Clone the repository and install dependencies:
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```bash
+git clone https://github.com/Reva1v/Collection-Hub.git
+cd your-repo-name
+npm install
+```

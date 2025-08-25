@@ -1,11 +1,13 @@
-import type {Energetic} from "../../types/Energetic.ts";
+"use client";
+
+import type {Energetic} from "@/types/Energetic";
 import styles from './Card.module.css';
 import * as React from "react";
 import {useState} from "react";
-import CheckCardPopup from "../CheckCardPopup/CheckCardPopup.tsx";
+import CheckCardPopup from "@/components/CheckCardPopup/CheckCardPopup";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faBan, faCheck, faQuestion} from '@fortawesome/free-solid-svg-icons';
-import {useEnergetic} from "../../contexts/EnergeticContext.tsx";
+import {useEnergetic} from "@/contexts/EnergeticContext";
 import {createPortal} from "react-dom";
 
 interface CardProps {

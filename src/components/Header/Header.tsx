@@ -1,7 +1,9 @@
+"use client";
+
 import styles from "./Header.module.css";
 import type {FC} from "react";
 import FilterByType from "../FilterByType/FilterByType";
-import { useEnergetic } from "../../contexts/EnergeticContext";
+import { useEnergetic } from "@/contexts/EnergeticContext";
 
 interface HeaderProps {
     showNav?: boolean;

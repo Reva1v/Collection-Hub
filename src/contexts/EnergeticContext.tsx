@@ -1,6 +1,8 @@
 // src/contexts/EnergeticContext.tsx
+"use client";
+
 import React, { createContext, useContext, useState, useMemo, type ReactNode } from 'react';
-import type { Energetic } from '../types/Energetic';
+import type { Energetic } from '@/types/Energetic';
 import energeticsData from '../assets/data/energetics.json';
 
 type CollectStatus = 'unknown' | 'collected' | 'will-not-collect';

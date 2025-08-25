@@ -1,5 +1,7 @@
+"use client";
+
 import React, { useMemo, useState } from 'react';
-import { useEnergetic } from "../../contexts/EnergeticContext";
+import { useEnergetic } from "@/contexts/EnergeticContext";
 import styles from './FilterByType.module.css';
 
 const FilterByType: React.FC = () => {
