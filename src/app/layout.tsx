@@ -1,7 +1,13 @@
 import type {Metadata} from "next";
-import {Geist, Geist_Mono} from "next/font/google";
+import {Geist, Geist_Mono, Roboto} from "next/font/google";
 import "./globals.css";
 import React from "react";
+
+const roboto = Roboto({
+    variable: "--font-roboto",
+    weight: '500',
+    subsets: ['latin'],
+})
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -16,10 +22,6 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
     title: "Collection Hub",
     description: "Collection Hub",
-    // icons: {
-    //     icon: '../../public/favicon.svg',
-    //     shortcut: '../../public/favicon.svg',
-    // },
 };
 
 export default function RootLayout({
@@ -28,15 +30,15 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en">
+        <html lang="en" suppressHydrationWarning>
         <head>
             <title>Collection Hub</title>
-            <meta name="apple-mobile-web-app-title" content="Collection Hub" />
+            <meta name="apple-mobile-web-app-title" content="Collection Hub"/>
         </head>
         <body
-            className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+            className={`${geistSans.variable} ${geistMono.variable} ${roboto.variable} antialiased`}
         >
-            {children}
+        {children}
         </body>
         </html>
     );

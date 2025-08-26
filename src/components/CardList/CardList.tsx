@@ -3,10 +3,10 @@
 import React, {useState, useEffect, useRef} from 'react';
 import Card from '@/components/Card/Card';
 import styles from './CardList.module.css';
-import { useEnergetic } from "@/contexts/EnergeticContext";
+import {useEnergetic} from "@/contexts/EnergeticContext";
 
 const CardList: React.FC = () => {
-    const { energetics } = useEnergetic();
+    const {energetics} = useEnergetic();
     const [animatedCards, setAnimatedCards] = useState<string[]>([]);
     const previousEnergeticsRef = useRef<string[]>([]);
 
@@ -52,10 +52,10 @@ const CardList: React.FC = () => {
         <ul className={styles['card-list']}>
             {energetics.map((energetic) => (
                 <div key={energetic.id} className={`${styles['card-item']} ${
-                        animatedCards.includes(energetic.id) ? styles['card-item--visible'] : styles['card-item--hidden']
-                    }`}
+                    animatedCards.includes(energetic.id) ? styles['card-item--visible'] : styles['card-item--hidden']
+                }`}
                 >
-                    <Card energetic={energetic} />
+                    <Card energetic={energetic}/>
                 </div>
             ))}
         </ul>
