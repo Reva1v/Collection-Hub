@@ -1,11 +1,9 @@
-// src/contexts/EnergeticContext.tsx
 "use client";
 
-import React, { createContext, useContext, useState, useMemo, type ReactNode } from 'react';
-import type { Energetic } from '@/types/Energetic';
-import energeticsData from '../assets/data/energetics.json';
+import React, { createContext, useContext, useState, useMemo, useEffect, type ReactNode } from "react";
+import type { Energetic } from "@/types/Energetic";
 
-type CollectStatus = 'unknown' | 'collected' | 'will-not-collect';
+type CollectStatus = "unknown" | "collected" | "will-not-collect";
 
 interface EnergeticContextType {
     energetics: Energetic[];
@@ -22,66 +20,74 @@ interface EnergeticProviderProps {
     children: ReactNode;
 }
 
-const STORAGE_KEY = 'monster-energetics-collection';
+const STORAGE_KEY = "monster-energetics-collection";
 
 export const EnergeticProvider: React.FC<EnergeticProviderProps> = ({ children }) => {
-    const [allEnergetics, setAllEnergetics] = useState<Energetic[]>(() => {
-        // Пытаемся загрузить сохраненные данные из localStorage
-        const savedData = localStorage.getItem(STORAGE_KEY);
-        if (savedData) {
+    const [allEnergetics, setAllEnergetics] = useState<Energetic[]>([]);
+    const [selectedType, setSelectedType] = useState<string>("all");
+
+    // Загружаем данные из API при монтировании
+    useEffect(() => {
+        async function loadData() {
             try {
-                return JSON.parse(savedData);
-            } catch (error) {
-                console.error('Error parsing saved data:', error);
-                return energeticsData;
+                const res = await fetch("/api/energetics");
+                const data: Energetic[] = await res.json();
+
+                // Если есть сохранённые данные в localStorage → объединяем с БД
+                const savedData = localStorage.getItem(STORAGE_KEY);
+                if (savedData) {
+                    const parsed = JSON.parse(savedData) as Energetic[];
+                    // Обновляем только поле "collect", остальное берём из БД
+                    const merged = data.map((dbItem) => {
+                        const saved = parsed.find((s) => s.id === dbItem.id);
+                        return saved ? { ...dbItem, collect: saved.collect } : dbItem;
+                    });
+                    setAllEnergetics(merged);
+                } else {
+                    setAllEnergetics(data);
+                }
+            } catch (e) {
+                console.error("Failed to fetch energetics:", e);
             }
         }
-        return energeticsData;
-    });
 
-    const [selectedType, setSelectedType] = useState<string>('all');
+        loadData();
+    }, []);
 
-    // Фильтрованные энергетики в зависимости от выбранного типа
     const energetics = useMemo(() => {
-        if (selectedType === 'all') {
-            return allEnergetics;
-        }
-        return allEnergetics.filter(energetic => energetic.type === selectedType);
+        if (selectedType === "all") return allEnergetics;
+        return allEnergetics.filter((energetic) => energetic.type === selectedType);
     }, [allEnergetics, selectedType]);
 
-    // Получение уникальных типов
-    const getUniqueTypes = () => {
-        return [...new Set(allEnergetics.map(energetic => energetic.type))];
-    };
+    const getUniqueTypes = () => [...new Set(allEnergetics.map((e) => e.type))];
 
     const updateCollectStatus = (id: string, status: CollectStatus) => {
-        setAllEnergetics(prevEnergetics => {
-            const updatedEnergetics = prevEnergetics.map(energetic =>
-                energetic.id === id
-                    ? { ...energetic, collect: status }
-                    : energetic
+        setAllEnergetics((prev) => {
+            const updated = prev.map((energetic) =>
+                energetic.id === id ? { ...energetic, collect: status } : energetic
             );
 
-            // Сохраняем изменения в localStorage
             try {
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedEnergetics));
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
             } catch (error) {
-                console.error('Error saving to localStorage:', error);
+                console.error("Error saving to localStorage:", error);
             }
 
-            return updatedEnergetics;
+            return updated;
         });
     };
 
     return (
-        <EnergeticContext.Provider value={{
-            energetics,
-            allEnergetics,
-            selectedType,
-            setSelectedType,
-            getUniqueTypes,
-            updateCollectStatus
-        }}>
+        <EnergeticContext.Provider
+            value={{
+                energetics,
+                allEnergetics,
+                selectedType,
+                setSelectedType,
+                getUniqueTypes,
+                updateCollectStatus,
+            }}
+        >
             {children}
         </EnergeticContext.Provider>
     );
@@ -90,7 +96,7 @@ export const EnergeticProvider: React.FC<EnergeticProviderProps> = ({ children }
 export const useEnergetic = () => {
     const context = useContext(EnergeticContext);
     if (context === undefined) {
-        throw new Error('useEnergetic must be used within an EnergeticProvider');
+        throw new Error("useEnergetic must be used within an EnergeticProvider");
     }
     return context;
 };
