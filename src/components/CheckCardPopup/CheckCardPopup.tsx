@@ -1,52 +1,145 @@
-import * as React from "react";
+"use client";
+
+import React, {useEffect} from 'react';
+import type {Item, CollectStatus} from '@/contexts/AppContext';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faBan, faCheck, faQuestion} from '@fortawesome/free-solid-svg-icons';
 import styles from './CheckCardPopup.module.css';
-import type {Energetic} from "@/types/Energetic";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faBan, faCheck, faXmark} from '@fortawesome/free-solid-svg-icons'
 
 interface CheckCardPopupProps {
-    energetic: Energetic | null;
+    item: Item;
     onClose: () => void;
-    onStatusChange: (status: 'unknown' | 'collected' | 'will-not-collect') => void;
+    onStatusChange: (status: CollectStatus) => void;
+    isUpdating?: boolean;
 }
 
-const CheckCardPopup: React.FC<CheckCardPopupProps> = ({energetic, onClose, onStatusChange}) => {
-    if (!energetic) return null;
+const CheckCardPopup: React.FC<CheckCardPopupProps> = ({
+                                                           item,
+                                                           onClose,
+                                                           onStatusChange,
+                                                           isUpdating = false
+                                                       }) => {
+    // Закрытие по Escape
+    useEffect(() => {
+        const handleEscape = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') {
+                onClose();
+            }
+        };
 
-    const handleStatusChange = (status: 'unknown' | 'collected' | 'will-not-collect') => {
-        onStatusChange(status);
-        onClose();
+        document.addEventListener('keydown', handleEscape);
+        return () => document.removeEventListener('keydown', handleEscape);
+    }, [onClose]);
+
+    // Блокируем скролл body когда попап открыт
+    // useEffect(() => {
+    //     document.body.style.overflow = 'scroll';
+    //     return () => {
+    //         document.body.style.overflow = 'unset';
+    //     };
+    // }, []);
+
+    const handleBackdropClick = (e: React.MouseEvent) => {
+        if (e.target === e.currentTarget) {
+            onClose();
+        }
     };
 
+    const statusOptions: Array<{
+        status: CollectStatus;
+        label: string;
+        icon: any;
+        className: string;
+    }> = [
+        {
+            status: 'collected',
+            label: 'Collected',
+            icon: faCheck,
+            className: styles['status-collected']
+        },
+        {
+            status: 'unknown',
+            label: 'Not Collected',
+            icon: faQuestion,
+            className: styles['status-unknown']
+        },
+        {
+            status: 'will-not-collect',
+            label: 'Will not collect',
+            icon: faBan,
+            className: styles['status-will-not-collect']
+        }
+    ];
+
     return (
-        <div className={styles['popup-overlay']} onClick={onClose}>
-            <div className={styles['popup-content']} onClick={(e) => e.stopPropagation()}>
-                <button className={styles['close-button']} onClick={onClose}>×</button>
-                <div className={styles['popup-content__header']}>
-                    <h2>{energetic.description}</h2>
-                    <img src={energetic.image} alt="energetic-img" width="30" />
+        <div
+            className={styles['popup-overlay']}
+            onClick={handleBackdropClick}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="popup-title"
+        >
+            <div className={`${styles['popup-content']} ${isUpdating ? styles['updating'] : ''}`}>
+                {/* Кнопка закрытия */}
+                <button
+                    className={styles['close-button']}
+                    onClick={onClose}
+                    aria-label="Close"
+                    disabled={isUpdating}
+                >
+                    {/*<FontAwesomeIcon icon={faX} />*/}
+                    ×
+                </button>
+
+                {/* Основная информация */}
+                <div className={styles['popup-header']}>
+                    {item.image && (
+                        <div className={styles['image-container']}>
+                            <img
+                                src={item.image}
+                                alt={item.description}
+                                className={styles['popup-image']}
+                                onError={(e) => {
+                                    const target = e.target as HTMLImageElement;
+                                    target.style.display = 'none';
+                                }}
+                                width={60}
+                            />
+                        </div>
+                    )}
+
+                    <div className={styles['item-info']}>
+                        <h2 id="popup-title" className={styles['item-name']}>
+                            {item.description}
+                        </h2>
+                    </div>
                 </div>
 
-                <button
-                    className={`${styles['popup-button']}`}
-                    onClick={() => handleStatusChange('collected')}
-                >
-                    <FontAwesomeIcon icon={faCheck}/> Collected
-                </button>
+                {/* Кнопки изменения статуса */}
+                <div className={styles['status-buttons']}>
+                    {statusOptions.map(option => (
+                        <button
+                            key={option.status}
+                            className={`${styles['popup-button']} ${option.className} ${
+                                item.collectStatus === option.status ? styles['active'] : ''
+                            }`}
+                            onClick={() => onStatusChange(option.status)}
+                            disabled={isUpdating || item.collectStatus === option.status}
+                            aria-pressed={item.collectStatus === option.status}
+                        >
+                            <FontAwesomeIcon icon={option.icon}/>
+                            <span>{option.label}</span>
+                        </button>
+                    ))}
+                </div>
 
-                <button
-                    className={`${styles['popup-button']} ${styles['not-collect']}`}
-                    onClick={() => handleStatusChange('unknown')}
-                >
-                    <FontAwesomeIcon icon={faXmark}/> Not collected
-                </button>
-
-                <button
-                    className={`${styles['popup-button']} ${styles['will-not-collect']}`}
-                    onClick={() => handleStatusChange('will-not-collect')}
-                >
-                    <FontAwesomeIcon icon={faBan}/> Will not collect
-                </button>
+                {/* Индикатор загрузки */}
+                {isUpdating && (
+                    <div className={styles['loading-overlay']}>
+                        <div className={styles['spinner']}/>
+                        <p>Updating status...</p>
+                    </div>
+                )}
             </div>
         </div>
     );

@@ -3,3 +3,7 @@
     padding: 10px 20px;
     /*min-height: 60px;*/
 }
+
+.header__inner{
+    text-align: center;
+}

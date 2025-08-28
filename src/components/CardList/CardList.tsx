@@ -3,16 +3,16 @@
 import React, {useState, useEffect, useRef} from 'react';
 import Card from '@/components/Card/Card';
 import styles from './CardList.module.css';
-import {useEnergetic} from "@/contexts/EnergeticContext";
+import {useApp} from "@/contexts/AppContext";
 
 const CardList: React.FC = () => {
-    const {energetics} = useEnergetic();
+    const {filteredItems, isLoading, error, selectedCollection} = useApp();
     const [animatedCards, setAnimatedCards] = useState<string[]>([]);
-    const previousEnergeticsRef = useRef<string[]>([]);
+    const previousItemsRef = useRef<string[]>([]);
 
     useEffect(() => {
-        const currentIds = energetics.map(e => e.id);
-        const previousIds = previousEnergeticsRef.current;
+        const currentIds = filteredItems.map(item => item.id);
+        const previousIds = previousItemsRef.current;
 
         // Проверяем, изменился ли состав карточек (а не только их данные)
         const hasCompositionChanged =
@@ -23,42 +23,119 @@ const CardList: React.FC = () => {
             // Только если изменился состав карточек - перезапускаем анимацию
             setAnimatedCards([]);
 
-            energetics.forEach((energetic, index) => {
+            filteredItems.forEach((item, index) => {
                 setTimeout(() => {
-                    setAnimatedCards(prev => [...prev, energetic.id]);
+                    setAnimatedCards(prev => [...prev, item.id]);
                 }, index * 50);
             });
 
             // Обновляем референс
-            previousEnergeticsRef.current = currentIds;
+            previousItemsRef.current = currentIds;
         }
-    }, [energetics]);
+    }, [filteredItems]);
 
     // Инициализация при первой загрузке
     useEffect(() => {
-        if (previousEnergeticsRef.current.length === 0) {
-            const initialIds = energetics.map(e => e.id);
-            previousEnergeticsRef.current = initialIds;
+        if (previousItemsRef.current.length === 0) {
+            const initialIds = filteredItems.map(item => item.id);
+            previousItemsRef.current = initialIds;
 
-            energetics.forEach((energetic, index) => {
+            filteredItems.forEach((item, index) => {
                 setTimeout(() => {
-                    setAnimatedCards(prev => [...prev, energetic.id]);
+                    setAnimatedCards(prev => [...prev, item.id]);
                 }, index * 50);
             });
         }
     }, []);
 
-    return (
-        <ul className={styles['card-list']}>
-            {energetics.map((energetic) => (
-                <div key={energetic.id} className={`${styles['card-item']} ${
-                    animatedCards.includes(energetic.id) ? styles['card-item--visible'] : styles['card-item--hidden']
-                }`}
+    // Сброс анимации при смене коллекции
+    useEffect(() => {
+        setAnimatedCards([]);
+        previousItemsRef.current = [];
+
+        // Запускаем анимацию с задержкой для новой коллекции
+        setTimeout(() => {
+            filteredItems.forEach((item, index) => {
+                setTimeout(() => {
+                    setAnimatedCards(prev => [...prev, item.id]);
+                }, index * 50);
+            });
+            previousItemsRef.current = filteredItems.map(item => item.id);
+        }, 100);
+    }, [selectedCollection?.id]);
+
+    // Состояние ошибки
+    if (error) {
+        return (
+            <div className={styles['error-state']}>
+                <div className={styles['error-icon']}>⚠️</div>
+                <h3>An error occurred</h3>
+                <p>{error}</p>
+                <button
+                    className={styles['retry-button']}
+                    onClick={() => window.location.reload()}
                 >
-                    <Card energetic={energetic}/>
-                </div>
-            ))}
-        </ul>
+                    Try again
+                </button>
+            </div>
+        );
+    }
+
+    // Состояние загрузки
+    if (isLoading) {
+        return (
+            <div className={styles['loading-state']}>
+                <div className={styles['loading-spinner']}/>
+                <p>Loading elements...</p>
+            </div>
+        );
+    }
+
+    // Пустое состояние - нет элементов
+    if (filteredItems.length === 0) {
+        return (
+            <div className={styles['empty-state']}>
+                <div className={styles['empty-icon']}>📭</div>
+                <h3>
+                    {selectedCollection
+                        ? `The collection "${selectedCollection.name}" has no items yet`
+                        : "You don't have any items yet"
+                    }
+                </h3>
+                <p>Add the first item to this collection</p>
+                {selectedCollection && (
+                    <button
+                        className={styles['add-item-btn']}
+                        // onClick={createItem}
+                    >
+                        <span className={styles['btn-icon']}>+</span>
+                        Add First Item
+                    </button>
+                )}
+            </div>
+        );
+    }
+
+
+    return (
+        <>
+            {/* Список карточек */}
+            <ul className={styles['card-list']} role="list">
+                {filteredItems.map((item, index) => (
+                    <li
+                        key={item.id ?? `item-${index}`}
+                        className={`${styles['card-item']} ${
+                            animatedCards.includes(item.id)
+                                ? styles['card-item--visible']
+                                : styles['card-item--hidden']
+                        }`}
+                        role="listitem"
+                    >
+                        <Card item={item}/>
+                    </li>
+                ))}
+            </ul>
+        </>
     );
 };
 

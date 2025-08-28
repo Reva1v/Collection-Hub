@@ -1,32 +1,80 @@
 "use client";
 
-import * as React from 'react'
-import styles from './home/Home.module.css'
-import CardList from "@/components/CardList/CardList";
-import ClickSpark from '@/components/ClickSpark/ClickSpark';
-import Header from "@/components/Header/Header";
-import {EnergeticProvider} from "@/contexts/EnergeticContext";
+import * as React from 'react';
+import styles from '@/app/Home.module.css';
+import { useApp } from "@/contexts/AppContext.tsx";
 
-const Page: React.FC = () => {
+const HomePage: React.FC = () => {
+    const { user } = useApp(); // предполагая что у вас есть информация о пользователе
+
+    // if (!isAuthenticated) {
+    //     return (
+    //         <div className={styles.container}>
+    //             <div className={styles.welcome}>
+    //                 <h1>Welcome to Collection Manager</h1>
+    //                 <p>Please log in to access your collections and manage your items.</p>
+    //                 <button className={styles.loginButton}                             onClick={() => {
+    //
+    //                     window.location.href = '/login';
+    //                 }}>
+    //                     Log In
+    //                 </button>
+    //             </div>
+    //         </div>
+    //     );
+    // }
 
     return (
-        <EnergeticProvider>
-            <ClickSpark
-                sparkColor='#fff'
-                sparkSize={10}
-                sparkRadius={15}
-                sparkCount={8}
-                duration={400}
-            >
-                <Header/>
-                <div className={styles['home']}>
-                    <div className={styles['main-board']}>
-                        <CardList/>
+        <div className={styles.container}>
+            <div className={styles.hero}>
+                <h1 className={styles.title}>
+                    Welcome back{user?.username ? `, ${user.username}` : ''}!
+                </h1>
+                <p className={styles.subtitle}>
+                    Manage your collections and discover amazing items
+                </p>
+            </div>
+
+            <div className={styles.navigation}>
+                <div className={styles.navGrid}>
+                    <div className={styles.navCard}>
+                        <div className={styles.cardIcon}>📦</div>
+                        <h3>My Collections</h3>
+                        <p>Browse and manage your item collections</p>
+                        <button
+                            className={styles.navButton}
+                            onClick={() => {
+                                // Навигация к странице Items
+                                window.location.href = '/collections';
+                                // Или если используете Next.js router:
+                                // router.push('/items');
+                            }}
+                        >
+                            View Items
+                        </button>
                     </div>
                 </div>
-            </ClickSpark>
-        </EnergeticProvider>
-    )
-}
+            </div>
 
-export default Page
+            <div className={styles.quickStats}>
+                <h2>Quick Overview</h2>
+                <div className={styles.statsGrid}>
+                    <div className={styles.statCard}>
+                        <span className={styles.statNumber}>-</span>
+                        <span className={styles.statLabel}>Collections</span>
+                    </div>
+                    <div className={styles.statCard}>
+                        <span className={styles.statNumber}>-</span>
+                        <span className={styles.statLabel}>Total Items</span>
+                    </div>
+                    <div className={styles.statCard}>
+                        <span className={styles.statNumber}>-</span>
+                        <span className={styles.statLabel}>Recently Added</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default HomePage;

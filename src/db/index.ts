@@ -1,5 +1,5 @@
 import { db } from "./db.ts";
-import { energetic } from "./schema.ts";
+import { items } from "./schema.ts";
 import { randomUUID } from "crypto";
 import { readFileSync } from "fs";
 
@@ -13,11 +13,11 @@ async function main() {
     // });
 
     const energetics = JSON.parse(
-        readFileSync(new URL("../assets/data/energetics.json", import.meta.url), "utf-8")
+        readFileSync(new URL("../assets/data/items.json", import.meta.url), "utf-8")
     );
 
     for (const item of energetics) {
-        await db.insert(energetic).values({
+        await db.insert(item).values({
             id: randomUUID(),
             description: item.description,
             image: item.image,
@@ -26,7 +26,7 @@ async function main() {
         });
     }
 
-    const items = await db.select().from(energetic);
+    // const items = await db.select().from(energetic);
     console.log(items);
 }
 

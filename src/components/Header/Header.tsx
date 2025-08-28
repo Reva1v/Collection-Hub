@@ -3,19 +3,28 @@
 import styles from "./Header.module.css";
 import type {FC} from "react";
 import FilterByType from "../FilterByType/FilterByType";
-import { useEnergetic } from "@/contexts/EnergeticContext";
+import { useApp } from "@/contexts/AppContext";
 
 interface HeaderProps {
     showNav?: boolean;
 }
 
 const Header: FC<HeaderProps> = () => {
-    const { energetics, allEnergetics } = useEnergetic();
+    const { filteredItems, selectedCollection } = useApp();
+
+    // Считаем собранные элементы среди отфильтрованных
+    const collectedCount = filteredItems.filter(item => item.collectStatus === 'collected').length;
+    const totalCount = filteredItems.length;
+
+    // Определяем текст для отображения контекста
+    const contextText = selectedCollection
+        ? `In "${selectedCollection.name}":`
+        : "Collected:";
 
     return (
         <header className={styles.header}>
             <div className={styles.header__inner}>
-                <p>Collected: {energetics.filter(energetic => energetic.collect === 'collected').length} of {allEnergetics.length}</p>
+                <p>{contextText} {collectedCount} of {totalCount}</p>
                 <FilterByType />
             </div>
         </header>

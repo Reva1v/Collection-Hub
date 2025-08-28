@@ -1,5 +1,5 @@
-.card{
-    border: solid #2b2b2b;
+.card {
+    border: solid #222;
     border-radius: 10px;
     padding: 30px 25px;
     display: flex;
@@ -9,11 +9,15 @@
     /*width: 350px;*/
     max-width: 350px;
     min-width: 380px;
-    background-color: #1c1c1c;
+    background-color: var(--background);
     cursor: pointer;
     position: relative;
     height: -webkit-fill-available;
     aspect-ratio: auto;
+}
+
+.card:hover {
+    background: rgba(69, 69, 69, 0.1);
 }
 
 .status-icon {
@@ -32,12 +36,12 @@
 }
 
 .status-collected {
-    background: #5fca2a;
+    background: var(--accent);
     color: #000;
-    border-color: #5fca2a;
+    border-color: var(--accent);
 }
 
-.status-collected-card{
+.status-collected-card {
     border: solid rgba(95, 202, 42, 0.3);
 }
 
@@ -53,7 +57,7 @@
     border-color: #ca2a2a;
 }
 
-.status-will-not-collect-card{
+.status-will-not-collect-card {
     opacity: 40%;
 }
 
@@ -64,29 +68,94 @@
     border-color: #888;
 }
 
-@media (max-width: 970px){
-    .card{
+/* Добавьте эти стили в Card.module.css */
+
+/* Стили для типа элемента */
+.item-type {
+    font-size: 0.8rem;
+    color: var(--text);
+    background: var(--secondary);
+    padding: 4px 8px;
+    border-radius: 12px;
+    margin-top: 8px;
+    display: inline-block;
+}
+
+/* Стили для состояния загрузки */
+/*.updating {*/
+/*    opacity: 0.7;*/
+/*    pointer-events: none;*/
+/*    position: relative;*/
+/*}*/
+
+.loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: inherit;
+    z-index: 10;
+}
+
+.spinner {
+    width: 24px;
+    height: 24px;
+    border: 2px solid #333333;
+    border-top: 2px solid #787878;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Улучшение доступности */
+/*.card:focus {*/
+/*    outline: 2px solid #007bff;*/
+/*    outline-offset: 2px;*/
+/*}*/
+
+/* Стили для карточки со статусом unknown */
+/*.status-unknown-card {*/
+/*    border: 2px solid #ffc107;*/
+/*    box-shadow: 0 0 10px rgba(255, 193, 7, 0.3);*/
+/*}*/
+
+@media (max-width: 970px) {
+    .card {
         max-width: 230px;
         min-width: 230px;
         padding: 10px 0;
     }
-    .card img{
+
+    .card img {
         width: 80px;
         object-fit: contain;
     }
 
-    .card h1{
+    .card h1 {
         font-size: 1.5em;
         margin-bottom: 5px;
     }
 
-    .card h2{
+    .card h2 {
         font-size: 1em;
         margin-top: 5px;
         margin-bottom: 0;
     }
 
-    .status-icon{
+    .status-icon {
         width: 30px;
         height: 30px;
         top: 7px;
@@ -94,28 +163,29 @@
     }
 }
 
-@media (max-width: 700px){
-    .card{
-        max-width: 150px;
-        min-width: 150px;
+@media (max-width: 700px) {
+    .card {
+        max-width: 170px;
+        min-width: 170px;
         padding: 15px 0;
     }
-    .card img{
+
+    .card img {
         width: 50px;
     }
 
-    .card h1{
+    .card h1 {
         font-size: 1em;
         margin-bottom: 5px;
     }
 
-    .card h2{
+    .card h2 {
         font-size: 0.7em;
         margin-top: 5px;
         margin-bottom: 0;
     }
 
-    .status-icon{
+    .status-icon {
         width: 30px;
         height: 30px;
         top: 7px;
@@ -123,23 +193,23 @@
     }
 }
 
-@media (max-width: 410px){
-    .card{
+@media (max-width: 410px) {
+    .card {
         max-width: 150px;
         min-width: 150px;
         padding: 10px 0;
     }
 
-    .card img{
+    .card img {
         width: 50px;
     }
 
-    .card h1{
+    .card h1 {
         font-size: 1em;
         margin-bottom: 5px;
     }
 
-    .card h2{
+    .card h2 {
         font-size: 0.7em;
         margin-top: 0;
         margin-bottom: 5px;

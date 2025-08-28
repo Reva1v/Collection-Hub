@@ -1,13 +1,9 @@
 import type {Metadata} from "next";
-import {Geist, Geist_Mono, Roboto} from "next/font/google";
+import {Geist, Geist_Mono} from "next/font/google";
 import "./globals.css";
 import React from "react";
-
-const roboto = Roboto({
-    variable: "--font-roboto",
-    weight: '500',
-    subsets: ['latin'],
-})
+import {AppProvider} from "@/contexts/AppContext";
+// import AppLayout from "@/components/AppLayout/AppLayout.tsx";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -30,16 +26,18 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en" suppressHydrationWarning>
-        <head>
-            <title>Collection Hub</title>
-            <meta name="apple-mobile-web-app-title" content="Collection Hub"/>
-        </head>
-        <body
-            className={`${geistSans.variable} ${geistMono.variable} ${roboto.variable} antialiased`}
-        >
-        {children}
-        </body>
-        </html>
+            <html lang="en" suppressHydrationWarning>
+            <head>
+                <title>Collection Hub</title>
+                <meta name="apple-mobile-web-app-title" content="Collection Hub"/>
+            </head>
+            <body
+                className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+            >
+            <AppProvider>
+                {children}
+            </AppProvider>
+            </body>
+            </html>
     );
 }
