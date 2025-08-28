@@ -45,3 +45,4 @@ next-env.d.ts
 /drizzle/
 /package.json
 /package-lock.json
+/.github/git-commit-instructions.md
