@@ -46,3 +46,6 @@ next-env.d.ts
 /package.json
 /package-lock.json
 /.github/git-commit-instructions.md
+/next.openapi.json
+/public/openapi.json
+/src/app/api-docs/page.tsx
