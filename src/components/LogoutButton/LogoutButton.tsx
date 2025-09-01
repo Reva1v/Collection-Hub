@@ -1,19 +1,20 @@
 'use client';
 
-import { logout } from '@/app/auth/actions.ts';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {faArrowRightFromBracket} from "@fortawesome/free-solid-svg-icons";
+import {logout} from '@/lib/auth/actions.ts';
+import styles from "@/components/LogoutButton/LogoutButton.module.css";
+import {VscSignOut} from "react-icons/vsc";
+import * as React from "react";
 
 export default function LogoutButton() {
     return (
         <button
-            className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-gray-500 transition-all hover:text-gray-900"
+            className={styles['logout-button']}
             onClick={async () => {
                 await logout();
             }}
         >
-            <FontAwesomeIcon icon={faArrowRightFromBracket} />
-            Logout
+            <VscSignOut size={16}/>
+            Log Out
         </button>
     );
 }
