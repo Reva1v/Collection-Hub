@@ -1,18 +1,23 @@
-// Компонент карточки коллекции
+"use client";
+
 import * as React from 'react'
-import {useRouter} from 'next/navigation'
-import {useApp} from "@/contexts/AppContext.tsx";
-import type {Collection} from "@/contexts/AppContext.tsx";
+import { useRouter } from 'next/navigation'
+import type { Collection } from "@/lib/types/Collection.ts";
+import type { Item } from "@/lib/types/Item.ts";
 import styles from "./CollectionCard.module.css";
 
-export const CollectionCard: React.FC<{ collection: Collection }> = ({collection}) => {
-    const {items, setSelectedCollection} = useApp();
+interface CollectionCardProps {
+    collection: Collection;
+    items: Item[]; // Передаем ItemsPage как prop вместо получения из контекста
+}
+
+export const CollectionCard: React.FC<CollectionCardProps> = ({ collection, items = [] }) => {
     const router = useRouter();
 
     // Считаем количество элементов в коллекции
     const itemsCount = items.filter(item => item.collectionId === collection.id).length;
 
-// Считаем собранные элементы
+    // Считаем собранные элементы
     const collectedCount = items.filter(
         item =>
             item.collectionId === collection.id &&
@@ -20,8 +25,16 @@ export const CollectionCard: React.FC<{ collection: Collection }> = ({collection
     ).length;
 
     const handleClick = () => {
-        setSelectedCollection(collection);
-        router.push('/items'); // или куда вы хотите перенаправить
+        // Переходим на страницу конкретной коллекции
+        router.push(`/collections/${collection.id}`);
+        // router.push(`/ItemsPage`);
+    };
+
+    const handleKeyDown = (e: React.KeyboardEvent) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            handleClick();
+        }
     };
 
     return (
@@ -30,20 +43,15 @@ export const CollectionCard: React.FC<{ collection: Collection }> = ({collection
             onClick={handleClick}
             role="button"
             tabIndex={0}
-            onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    handleClick();
-                }
-            }}
+            onKeyDown={handleKeyDown}
         >
             <div className={styles['collection-header']}>
                 <h3 className={styles['collection-name']}>{collection.name}</h3>
                 <div className={styles['collection-stats']}>
-                    <span className={styles['items-count']}>{itemsCount} items</span>
+                    <span className={styles['ItemsPage-count']}>{itemsCount} items</span>
                     <span className={styles['collected-count']}>
-                        {collectedCount} collected
-                    </span>
+            {collectedCount} collected
+          </span>
                 </div>
             </div>
 
@@ -63,12 +71,12 @@ export const CollectionCard: React.FC<{ collection: Collection }> = ({collection
                     />
                 </div>
                 <span className={styles['progress-text']}>
-                    {itemsCount > 0 ? Math.round((collectedCount / itemsCount) * 100) : 0}% complete
-                </span>
+          {itemsCount > 0 ? Math.round((collectedCount / itemsCount) * 100) : 0}% complete
+        </span>
             </div>
 
             <div className={styles['collection-date']}>
-                Created: {new Date(collection.createdAt).toLocaleDateString()}
+                {/*Created: {new Date(collection.createdAt).toLocaleDateString()}*/}
             </div>
         </div>
     );
