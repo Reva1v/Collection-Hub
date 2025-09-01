@@ -1,9 +1,10 @@
 import 'server-only';
 
-import type {SessionPayload} from '@/app/auth/definitions';
+import type {SessionPayload} from '@/lib/auth/definitions.ts';
 import {SignJWT, jwtVerify} from 'jose';
 import {cookies} from 'next/headers';
 import {redirect} from 'next/navigation';
+import {userExists} from "@/lib/auth/dal.ts";
 
 const secretKey = process.env.SECRET;
 const key = new TextEncoder().encode(secretKey);
@@ -69,6 +70,26 @@ export async function updateSession() {
         sameSite: 'lax',
         path: '/',
     });
+}
+
+export async function getCurrentUser() {
+    try {
+        const cookie = (await cookies()).get("session")?.value;
+        if (!cookie) return null;
+
+        const session = await decrypt(cookie);
+        if (!session || typeof session.userId !== "string") {
+            return null;
+        }
+
+        const user = await userExists(session.userId);
+        if (!user) return null;
+
+        return session.userId;
+    } catch (error) {
+        console.error("Auth error:", error);
+        return null;
+    }
 }
 
 export async function deleteSession() {

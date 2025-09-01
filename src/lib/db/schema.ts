@@ -9,18 +9,6 @@ export const users = pgTable("users", {
     createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
 });
 
-// Сессии
-export const sessions = pgTable("sessions", {
-    id: uuid("id").defaultRandom().primaryKey(),
-    userId: uuid("user_id")
-        .notNull()
-        .references(() => users.id, { onDelete: "cascade" }),
-    token: text("token").notNull().unique(),
-    expiresAt: timestamp("expires_at").notNull(),
-    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
-
-});
-
 // Коллекции
 export const collections = pgTable("collections", {
     id: uuid("id").defaultRandom().primaryKey(),

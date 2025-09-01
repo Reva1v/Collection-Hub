@@ -1,14 +1,14 @@
 'use server';
 
-import {db} from '@/db/db.ts';
-import {users} from '@/db/schema.ts';
+import {db} from '@/lib/db/db.ts';
+import {users} from '@/lib/db/schema.ts';
 import {
     FormState,
     LoginFormSchema,
     SignupFormSchema,
-} from '@/app/auth/definitions.ts';
-import {deleteSession} from '@/app/auth/session.ts';
-import {createSession} from '@/app/auth/session-db.ts';
+} from '@/lib/auth/definitions.ts';
+import {deleteSession} from '@/lib/auth/session.ts';
+import {createSession} from '@/lib/auth/session.ts';
 import bcrypt from 'bcrypt';
 import {eq} from 'drizzle-orm';
 

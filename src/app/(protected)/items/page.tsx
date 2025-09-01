@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from 'react';
-import styles from '@/app/items/items.module.css';
+import styles from '@/app/(protected)/items/items.module.css';
 import ClickSpark from '@/components/ClickSpark/ClickSpark.tsx';
 import CardList from "@/components/CardList/CardList.tsx";
 import Header from "@/components/Header/Header.tsx";
