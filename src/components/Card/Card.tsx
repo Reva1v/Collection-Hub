@@ -1,14 +1,14 @@
 "use client";
 
-import type { Item, CollectStatus } from "@/contexts/AppContext";
+import type { Item, CollectStatus } from "@/lib/types/Item";
 import styles from './Card.module.css';
 import * as React from "react";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import CheckCardPopup from "@/components/CheckCardPopup/CheckCardPopup";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBan, faCheck, faQuestion } from '@fortawesome/free-solid-svg-icons';
-import { useApp } from "@/contexts/AppContext";
 import { createPortal } from "react-dom";
+import { updateCollectStatus } from "@/lib/items/actions"; // теперь тянем экшен напрямую
 
 interface CardProps {
     item: Item;
@@ -16,31 +16,26 @@ interface CardProps {
 
 const Card: React.FC<CardProps> = ({ item }) => {
     const [isPopupOpen, setIsPopupOpen] = useState(false);
-    const [isUpdating, setIsUpdating] = useState(false);
-    const { updateCollectStatus } = useApp();
+    const [isPending, startTransition] = useTransition();
+    const [localStatus, setLocalStatus] = useState<CollectStatus>(item.collectStatus);
 
     const openPopup = () => setIsPopupOpen(true);
     const closePopup = () => setIsPopupOpen(false);
 
-    const handleStatusChange = async (status: CollectStatus) => {
-        setIsUpdating(true);
-        try {
-            const success = await updateCollectStatus(item.id, status);
-            if (success) {
+    const handleStatusChange = (status: CollectStatus) => {
+        startTransition(async () => {
+            const result = await updateCollectStatus(item.id, status);
+            if (result.success) {
+                setLocalStatus(status);
                 closePopup();
             } else {
-                // Показать ошибку пользователю
-                console.error("Failed to update status");
+                console.error("Failed to update status", result.error);
             }
-        } catch (error) {
-            console.error("Error updating status:", error);
-        } finally {
-            setIsUpdating(false);
-        }
+        });
     };
 
     const getStatusIcon = () => {
-        switch (item.collectStatus) {
+        switch (localStatus) {
             case 'collected':
                 return {
                     icon: faCheck,
@@ -74,7 +69,7 @@ const Card: React.FC<CardProps> = ({ item }) => {
         <>
             <div
                 onClick={openPopup}
-                className={`${styles['card']} ${statusIcon.cardClassName} ${isUpdating ? styles['updating'] : ''}`}
+                className={`${styles['card']} ${statusIcon.cardClassName} ${isPending ? styles['updating'] : ''}`}
                 role="button"
                 tabIndex={0}
                 onKeyDown={(e) => {
@@ -96,26 +91,21 @@ const Card: React.FC<CardProps> = ({ item }) => {
                         width="120"
                         loading="lazy"
                         onError={(e) => {
-                            // Скрываем изображение если оно не загрузилось
-                            const target = e.target as HTMLImageElement;
-                            target.style.display = 'none';
+                            (e.target as HTMLImageElement).style.display = 'none';
                         }}
                     />
                 )}
 
-                {/* Показываем название элемента вместо статичного "MONSTER" */}
                 <h1>{item.name}</h1>
                 <h2>{item.description}</h2>
 
-                {/* Показываем тип если он есть */}
                 {item.type && (
                     <div className={styles['item-type']}>
                         {item.type}
                     </div>
                 )}
 
-                {/* Индикатор загрузки */}
-                {isUpdating && (
+                {isPending && (
                     <div className={styles['loading-overlay']}>
                         <div className={styles['spinner']} />
                     </div>
@@ -124,10 +114,10 @@ const Card: React.FC<CardProps> = ({ item }) => {
 
             {isPopupOpen && createPortal(
                 <CheckCardPopup
-                    item={item}
+                    item={{ ...item, collectStatus: localStatus }}
                     onClose={closePopup}
                     onStatusChange={handleStatusChange}
-                    isUpdating={isUpdating}
+                    isUpdating={isPending}
                 />,
                 document.body
             )}
