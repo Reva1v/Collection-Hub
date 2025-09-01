@@ -3,20 +3,37 @@
 import styles from "./Header.module.css";
 import type {FC} from "react";
 import FilterByType from "../FilterByType/FilterByType";
-import { useApp } from "@/contexts/AppContext";
+import {Collection} from "@/lib/types/Collection";
+import {Item} from "@/lib/types/Item";
 
 interface HeaderProps {
     showNav?: boolean;
+    collections: Collection[];
+    selectedCollection: Collection | null;
+    setSelectedCollection: (collection: Collection | null) => void;
+    selectedType: string;
+    setSelectedType: (type: string) => void;
+    uniqueTypes: string[];
+    filteredItems: Item[]; // 👈 теперь передаём отфильтрованные ItemsPage
 }
 
-const Header: FC<HeaderProps> = () => {
-    const { filteredItems, selectedCollection } = useApp();
-
-    // Считаем собранные элементы среди отфильтрованных
-    const collectedCount = filteredItems.filter(item => item.collectStatus === 'collected').length;
+const Header: FC<HeaderProps> = ({
+                                     showNav = false,
+                                     collections,
+                                     selectedCollection,
+                                     setSelectedCollection,
+                                     selectedType,
+                                     setSelectedType,
+                                     uniqueTypes,
+                                     filteredItems,
+                                 }) => {
+    // Считаем собранные элементы
+    const collectedCount = filteredItems.filter(
+        (item) => item.collectStatus === "collected"
+    ).length;
     const totalCount = filteredItems.length;
 
-    // Определяем текст для отображения контекста
+    // Текст для отображения
     const contextText = selectedCollection
         ? `In "${selectedCollection.name}":`
         : "Collected:";
@@ -24,8 +41,13 @@ const Header: FC<HeaderProps> = () => {
     return (
         <header className={styles.header}>
             <div className={styles.header__inner}>
-                <p>{contextText} {collectedCount} of {totalCount}</p>
-                <FilterByType />
+                <p>
+                    {contextText} {collectedCount} of {totalCount}
+                </p>
+                <FilterByType
+                    selectedType={selectedType}
+                    setSelectedType={setSelectedType}
+                    uniqueTypes={uniqueTypes} items={[]} selectedCollection={null}/>
             </div>
         </header>
     );
