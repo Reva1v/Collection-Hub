@@ -1,40 +1,33 @@
 // app/api/collections/[id]/route.ts
-import { NextRequest, NextResponse } from "next/server";
-import { getSession } from "@/app/auth/session-db";
-import { db } from "@/db/db";
-import { collections } from "@/db/schema";
-import { eq, and } from "drizzle-orm";
+import {NextRequest, NextResponse} from "next/server";
+import {db} from "@/lib/db/db";
+import {collections} from "@/lib/db/schema";
+import {eq, and} from "drizzle-orm";
+import {getCurrentUser} from "@/lib/auth/session.ts";
 
 // PATCH /api/collections/[id] - обновить коллекцию
 export async function PATCH(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    {params}: { params: { id: string } }
 ) {
     try {
-        const session = await getSession();
-
-        if (!session || !session.userId) {
-            return NextResponse.json(
-                { error: "Unauthorized" },
-                { status: 401 }
-            );
-        }
+        const userId = (await getCurrentUser())!;
 
         const body = await request.json();
-        const { name, description } = body;
+        const {name, description} = body;
 
         // Проверяем, что коллекция принадлежит пользователю
         const collection = await db.query.collections.findFirst({
             where: and(
                 eq(collections.id, params.id),
-                eq(collections.userId, session.userId)
+                eq(collections.userId, userId)
             ),
         });
 
         if (!collection) {
             return NextResponse.json(
-                { error: "Collection not found" },
-                { status: 404 }
+                {error: "Collection not found"},
+                {status: 404}
             );
         }
 
@@ -56,8 +49,8 @@ export async function PATCH(
     } catch (error) {
         console.error("Error updating collection:", error);
         return NextResponse.json(
-            { error: "Internal Server Error" },
-            { status: 500 }
+            {error: "Internal Server Error"},
+            {status: 500}
         );
     }
 }
@@ -65,42 +58,35 @@ export async function PATCH(
 // DELETE /api/collections/[id] - удалить коллекцию
 export async function DELETE(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    {params}: { params: { id: string } }
 ) {
     try {
-        const session = await getSession();
-
-        if (!session || !session.userId) {
-            return NextResponse.json(
-                { error: "Unauthorized" },
-                { status: 401 }
-            );
-        }
+        const userId = (await getCurrentUser())!;
 
         // Проверяем, что коллекция принадлежит пользователю
         const collection = await db.query.collections.findFirst({
             where: and(
                 eq(collections.id, params.id),
-                eq(collections.userId, session.userId)
+                eq(collections.userId, userId)
             ),
         });
 
         if (!collection) {
             return NextResponse.json(
-                { error: "Collection not found" },
-                { status: 404 }
+                {error: "Collection not found"},
+                {status: 404}
             );
         }
 
         // Удаляем коллекцию (элементы удалятся автоматически из-за CASCADE)
         await db.delete(collections).where(eq(collections.id, params.id));
 
-        return NextResponse.json({ success: true });
+        return NextResponse.json({success: true});
     } catch (error) {
         console.error("Error deleting collection:", error);
         return NextResponse.json(
-            { error: "Internal Server Error" },
-            { status: 500 }
+            {error: "Internal Server Error"},
+            {status: 500}
         );
     }
 }

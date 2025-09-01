@@ -3,7 +3,7 @@
 import { Button } from '@/components/Button/Button.tsx';
 import { Input } from '@/components/Input/Input.tsx';
 import { Label } from '@/components/Label/Label.tsx';
-import { login } from '@/app/auth/actions.ts';
+import { login } from '@/lib/auth/actions.ts';
 import Link from 'next/link';
 import { useFormStatus } from 'react-dom';
 import React from "react";

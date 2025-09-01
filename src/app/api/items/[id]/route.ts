@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { items } from "@/db/schema";
-import { db } from "@/db/db";
+import { items } from "@/lib/db/schema";
+import { db } from "@/lib/db/db";
 import { eq } from "drizzle-orm";
 
 // PATCH /items/:id

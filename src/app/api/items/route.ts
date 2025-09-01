@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server";
-import { items, collections } from "@/db/schema";
-import { db } from "@/db/db";
+import { items, collections } from "@/lib/db/schema";
+import { db } from "@/lib/db/db";
 import { randomUUID } from "crypto";
 import { z, ZodError } from "zod";
 import { eq, and } from "drizzle-orm";
-import { getCurrentUserId } from "@/utils/getCurrentUserId";
+import {getCurrentUser} from "@/lib/auth/session.ts";
 
 // Схема для валидации POST запроса
 const ItemSchema = z.object({
@@ -40,9 +40,7 @@ export async function GET(req: Request) {
 export async function POST(req: Request) {
     try {
         // Получаем userId текущего пользователя
-        const userIdOrResponse = await getCurrentUserId();
-        if (userIdOrResponse instanceof NextResponse) return userIdOrResponse;
-        const userId = userIdOrResponse;
+        const userId = (await getCurrentUser())!;
 
         const body = await req.json();
         const parsed = ItemSchema.parse(body);

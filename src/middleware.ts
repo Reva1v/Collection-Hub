@@ -1,10 +1,12 @@
+export const runtime = "nodejs";
+
 import { NextRequest, NextResponse } from 'next/server';
-import { decrypt } from '@/app/auth/session.ts';
+import { decrypt } from '@/lib/auth/session.ts';
 import { cookies } from 'next/headers';
 
 // 1. Specify protected and public routes
-const protectedRoutes = ['/items', '/collections', '/profile'];
-const publicRoutes = ['/login', '/signup', '/'];
+const protectedRoutes = ['/items', '/collections', '/profile', '/'];
+const publicRoutes = ['/login', '/signup'];
 
 export default async function middleware(req: NextRequest) {
     // 2. Check if the current route is protected or public

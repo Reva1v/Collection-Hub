@@ -1,24 +1,16 @@
 // app/api/collections/route.ts
 import {NextRequest, NextResponse} from "next/server";
-import {getSession} from "@/app/auth/session-db";
-import {db} from "@/db/db";
-import {collections} from "@/db/schema";
+import {getCurrentUser} from "@/lib/auth/session.ts";
+import {db} from "@/lib/db/db";
+import {collections} from "@/lib/db/schema";
 import {eq} from "drizzle-orm";
 
 // GET /api/collections - получить все коллекции пользователя
-export async function GET(request: NextRequest) {
+export async function GET() {
     try {
-        const session = await getSession();
-
-        if (!session || !session.userId) {
-            return NextResponse.json(
-                {error: "Unauthorized"},
-                {status: 401}
-            );
-        }
-
+        const userId = await getCurrentUser();
         const userCollections = await db.query.collections.findMany({
-            where: eq(collections.userId, session.userId),
+            where: eq(collections.userId, userId!),
             orderBy: collections.createdAt,
         });
 
@@ -35,14 +27,7 @@ export async function GET(request: NextRequest) {
 // POST /api/collections - создать новую коллекцию
 export async function POST(request: NextRequest) {
     try {
-        const session = await getSession();
-
-        if (!session || !session.userId) {
-            return NextResponse.json(
-                {error: "Unauthorized"},
-                {status: 401}
-            );
-        }
+        const userId = (await getCurrentUser())!;
 
         const body = await request.json();
         const {name, description} = body;
@@ -57,7 +42,7 @@ export async function POST(request: NextRequest) {
         const [newCollection] = await db
             .insert(collections)
             .values({
-                userId: session.userId,
+                userId: userId,
                 name: name.trim(),
                 description: description?.trim() || null,
             })
@@ -66,55 +51,6 @@ export async function POST(request: NextRequest) {
         return NextResponse.json(newCollection, {status: 201});
     } catch (error) {
         console.error("Error creating collection:", error);
-        return NextResponse.json(
-            {error: "Internal Server Error"},
-            {status: 500}
-        );
-    }
-}
-
-export async function PATCH(request: NextRequest) {
-    try {
-        const session = await getSession();
-
-        if (!session || !session.userId) {
-            return NextResponse.json(
-                {error: "Unauthorized"},
-                {status: 401}
-            );
-        }
-
-        const body = await request.json();
-        const {id, name, description} = body;
-
-        await db.update(collections).set({name, description}).where(eq(collections.id, id));
-        return NextResponse.json({message: "Collection updated successfully"});
-    } catch (error) {
-        console.error("Error updating collection:", error);
-        return NextResponse.json(
-            {error: "Internal Server Error"},
-            {status: 500}
-        );
-    }
-}
-
-export async function DELETE(request: NextRequest) {
-    try {
-        const session = await getSession();
-
-        if (!session || !session.userId) {
-            return NextResponse.json(
-                {error: "Unauthorized"},
-                {status: 401}
-            );
-        }
-        const body = await request.json();
-        const {id} = body;
-
-        await db.delete(collections).where(eq(collections.id, id));
-        return NextResponse.json({message: "Collection deleted successfully"});
-    } catch (error) {
-        console.error("Error deleting collection:", error);
         return NextResponse.json(
             {error: "Internal Server Error"},
             {status: 500}
