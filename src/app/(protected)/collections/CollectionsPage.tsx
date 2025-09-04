@@ -1,17 +1,15 @@
 "use client";
 
 import * as React from 'react'
-import { useRouter } from 'next/navigation'
-import { useFormState } from 'react-dom'
+import {useRouter} from 'next/navigation'
 import styles from './collections.module.css'
 import ClickSpark from '@/components/ClickSpark/ClickSpark.tsx'
-import { VscAccount, VscArchive, VscHome } from "react-icons/vsc"
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime"
 import Dock from "@/components/Dock/Dock.tsx"
-import { CollectionCard } from "@/components/CollectionCard/CollectionCard.tsx"
-import { createCollection } from '@/lib/collections/actions.ts'
-import { Collection } from '@/lib/types/Collection.ts'
-import { Item } from '@/lib/types/Item.ts'
+import {CollectionCard} from "@/components/CollectionCard/CollectionCard.tsx"
+import {createCollection} from '@/lib/collections/actions.ts'
+import {Collection} from '@/lib/types/Collection.ts'
+import {Item} from '@/lib/types/Item.ts'
+import {NAV_ITEMS} from "@/lib/constants/navigation.tsx";
 
 interface CollectionsPageProps {
     initialCollections: Collection[]
@@ -19,9 +17,9 @@ interface CollectionsPageProps {
 }
 
 // Основная страница коллекций
-const CollectionsPage: React.FC<CollectionsPageProps> = ({ initialCollections, initialItems }) => {
+const CollectionsPage: React.FC<CollectionsPageProps> = ({initialCollections, initialItems}) => {
     const router = useRouter()
-    const [state, formAction] = useFormState(createCollection, null)
+    const [state, formAction] = React.useActionState(createCollection, null)
     const [isSubmitting, setIsSubmitting] = React.useState(false)
 
     // Локальное состояние для формы
@@ -42,31 +40,11 @@ const CollectionsPage: React.FC<CollectionsPageProps> = ({ initialCollections, i
         formAction(formData)
     }
 
-    const items = [
-        {
-            icon: <VscHome size={18}/>,
-            label: 'Home',
-            href: '/',
-            onClick: (router: AppRouterInstance) => () => router.push('/')
-        },
-        {
-            icon: <VscArchive size={18}/>,
-            label: 'Collections',
-            href: '/collections',
-            onClick: (router: AppRouterInstance) => () => router.push('/collections')
-        },
-        {
-            icon: <VscAccount size={18}/>,
-            label: 'Profile',
-            href: '/profile',
-            onClick: (router: AppRouterInstance) => () => router.push('/profile')
-        },
-    ]
 
     return (
         <>
             <Dock
-                items={items.map(item => ({
+                items={NAV_ITEMS.map(item => ({
                     ...item,
                     onClick: item.onClick(router)
                 }))}
