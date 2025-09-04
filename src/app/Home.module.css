@@ -1,17 +1,17 @@
 /* Основные стили страницы */
 .page {
     min-height: 100vh;
-    padding: 2rem 1rem 5rem; /* Добавляем отступ снизу для Dock */
+    padding: 2rem 1rem 6rem; /* Добавляем отступ снизу для Dock */
     background: var(--background);
     color: var(--text);
 }
 
 .main-board {
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
-    gap: 3rem;
+    gap: 2rem;
 }
 
 /* Hero Section */
