@@ -4,25 +4,51 @@ import * as React from "react";
 import { useRouter } from "next/navigation";
 import styles from "@/app/Home.module.css";
 import ClickSpark from "@/components/ClickSpark/ClickSpark.tsx";
-import { VscAccount, VscArchive, VscHome, VscAdd, VscSearch } from "react-icons/vsc";
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import { VscArchive, VscAdd } from "react-icons/vsc";
 import Dock from "@/components/Dock/Dock.tsx";
 import { Collection } from "@/lib/types/Collection";
+import {getCollections} from "@/lib/collections/actions.ts";
+import {getItems} from "@/lib/items/actions.ts";
+import {Item} from "@/lib/types/Item.ts";
+import {NAV_ITEMS} from "@/lib/constants/navigation";
 
 interface HomePageProps {
     user: { username?: string } | null;
-    collections: Collection[];
     error?: string | null;
 }
 
-const HomePage: React.FC<HomePageProps> = ({ user, collections, error }) => {
+const HomePage: React.FC<HomePageProps> = ({ user, error }) => {
     const router = useRouter();
+
+    const [collections, setCollections] = React.useState<Collection[]>([]);
+    const [collectionsItems, setCollectionsItems] = React.useState<Item[]>([]);
+    const [isLoading, setIsLoading] = React.useState(true);
+
+    React.useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const [collectionsData, itemsData] = await Promise.all([
+                    getCollections(),
+                    getItems()
+                ]);
+                setCollections(collectionsData || []);
+                setCollectionsItems(itemsData || []);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchData();
+    }, []);
 
     // Статистика
     const totalCollections = collections?.length || 0;
+    const totalItems = collectionsItems?.length || 0;
     const recentlyAdded =
-        collections?.filter((col) => {
-            const createdAt = new Date(col.createdAt || Date.now());
+        collectionsItems?.filter((item: Item) => {
+            const createdAt = new Date(item.createdAt || Date.now());
             const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
             return createdAt > weekAgo;
         }).length || 0;
@@ -39,31 +65,10 @@ const HomePage: React.FC<HomePageProps> = ({ user, collections, error }) => {
         );
     }
 
-    const items = [
-        {
-            icon: <VscHome size={18} />,
-            label: "Home",
-            href: "/",
-            onClick: (router: AppRouterInstance) => () => router.push("/"),
-        },
-        {
-            icon: <VscArchive size={18} />,
-            label: "Collections",
-            href: "/collections",
-            onClick: (router: AppRouterInstance) => () => router.push("/collections"),
-        },
-        {
-            icon: <VscAccount size={18} />,
-            label: "Profile",
-            href: "/profile",
-            onClick: (router: AppRouterInstance) => () => router.push("/profile"),
-        },
-    ];
-
     return (
         <>
             <Dock
-                items={items.map((item) => ({
+                items={NAV_ITEMS.map((item) => ({
                     ...item,
                     onClick: item.onClick(router),
                 }))}
@@ -112,17 +117,6 @@ const HomePage: React.FC<HomePageProps> = ({ user, collections, error }) => {
                                     <button className={styles["action-button"]}>Create New</button>
                                 </div>
 
-                                <div
-                                    className={styles["action-card"]}
-                                    onClick={() => router.push("/search")}
-                                >
-                                    <div className={styles["card-icon"]}>
-                                        <VscSearch size={32} />
-                                    </div>
-                                    <h3>Search Items</h3>
-                                    <p>Find specific items across all collections</p>
-                                    <button className={styles["action-button"]}>Search Now</button>
-                                </div>
                             </div>
                         </div>
 
@@ -141,7 +135,7 @@ const HomePage: React.FC<HomePageProps> = ({ user, collections, error }) => {
                                 <div className={styles["stat-card"]}>
                                     <div className={styles["stat-icon"]}>📦</div>
                                     <div className={styles["stat-info"]}>
-                                        <div className={styles["stat-number"]}>{10}</div>
+                                        <div className={styles["stat-number"]}>{totalItems}</div>
                                         <div className={styles["stat-label"]}>Total Items</div>
                                     </div>
                                 </div>
