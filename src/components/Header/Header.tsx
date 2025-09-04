@@ -5,6 +5,7 @@ import type {FC} from "react";
 import FilterByType from "../FilterByType/FilterByType";
 import {Collection} from "@/lib/types/Collection";
 import {Item} from "@/lib/types/Item";
+import {CollectionWithItems} from "@/lib/types/Collection.ts";
 
 interface HeaderProps {
     showNav?: boolean;
@@ -14,7 +15,7 @@ interface HeaderProps {
     selectedType: string;
     setSelectedType: (type: string) => void;
     uniqueTypes: string[];
-    filteredItems: Item[]; // 👈 теперь передаём отфильтрованные ItemsPage
+    filteredItems: Item[];
 }
 
 const Header: FC<HeaderProps> = ({
@@ -47,7 +48,9 @@ const Header: FC<HeaderProps> = ({
                 <FilterByType
                     selectedType={selectedType}
                     setSelectedType={setSelectedType}
-                    uniqueTypes={uniqueTypes} items={[]} selectedCollection={null}/>
+                    uniqueTypes={uniqueTypes}
+                    items={selectedCollection ? (selectedCollection as CollectionWithItems).items : []}
+                    selectedCollection={selectedCollection}/>
             </div>
         </header>
     );
