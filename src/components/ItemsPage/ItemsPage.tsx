@@ -6,11 +6,10 @@ import styles from '@/components/ItemsPage/items.module.css';
 import ClickSpark from '@/components/ClickSpark/ClickSpark.tsx';
 import CardList from "@/components/CardList/CardList.tsx";
 import Header from "@/components/Header/Header.tsx";
-import { VscAccount, VscArchive, VscHome } from "react-icons/vsc";
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import Dock from "@/components/Dock/Dock.tsx";
 import {Item} from "@/lib/types/Item.ts";
 import {Collection} from "@/lib/types/Collection.ts";
+import {NAV_ITEMS} from "@/lib/constants/navigation";
 
 
 interface ItemsPageProps {
@@ -59,31 +58,11 @@ const ItemsPage: React.FC<ItemsPageProps> = ({
         return filtered;
     }, [items, selectedCollection, selectedType]);
 
-    const dockItems = [
-        {
-            icon: <VscHome size={18}/>,
-            label: 'Home',
-            href: '/',
-            onClick: (router: AppRouterInstance) => () => router.push('/')
-        },
-        {
-            icon: <VscArchive size={18}/>,
-            label: 'Collections',
-            href: '/collections',
-            onClick: (router: AppRouterInstance) => () => router.push('/collections')
-        },
-        {
-            icon: <VscAccount size={18}/>,
-            label: 'Profile',
-            href: '/profile',
-            onClick: (router: AppRouterInstance) => () => router.push('/profile')
-        },
-    ];
 
     return (
         <>
             <Dock
-                items={dockItems.map(item => ({
+                items={NAV_ITEMS.map(item => ({
                     ...item,
                     onClick: item.onClick(router)
                 }))}

@@ -1,3 +1,5 @@
+import {Collection} from "@/lib/types/Collection.ts";
+
 export type CollectStatus = "unknown" | "collected" | "will-not-collect" | null;
 
 export interface Item {
@@ -9,4 +11,8 @@ export interface Item {
     type: string | null;
     collectStatus: "unknown" | "collected" | "will-not-collect" | null;
     createdAt: Date | null;
+}
+
+export interface ItemWithCollection extends Item {
+    collection: Collection;
 }
