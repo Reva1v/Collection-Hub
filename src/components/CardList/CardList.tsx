@@ -1,6 +1,6 @@
 "use client";
 
-import React, {useState, useEffect, useRef} from "react";
+import React, {useState, useEffect, useRef, Suspense} from "react";
 import Card from "@/components/Card/Card";
 import styles from "./CardList.module.css";
 import {Item} from "@/lib/types/Item";
@@ -16,6 +16,10 @@ interface CardListProps {
 const CardList: React.FC<CardListProps> = ({items, selectedCollection, isLoading = false, error = null}) => {
     const [animatedCards, setAnimatedCards] = useState<string[]>([]);
     const previousItemsRef = useRef<string[]>([]);
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [selectedCollection?.id]);
 
     // Анимация при изменении состава
     useEffect(() => {
@@ -130,7 +134,9 @@ const CardList: React.FC<CardListProps> = ({items, selectedCollection, isLoading
                     }`}
                     role="listitem"
                 >
-                    <Card item={item}/>
+                    <Suspense fallback={<div className={styles["card-skeleton"]}>Loading card...</div>}>
+                        <Card item={item} />
+                    </Suspense>
                 </li>
             ))}
         </ul>
