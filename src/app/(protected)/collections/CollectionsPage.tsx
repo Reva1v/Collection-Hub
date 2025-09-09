@@ -5,130 +5,90 @@ import {useRouter} from 'next/navigation'
 import styles from './collections.module.css'
 import ClickSpark from '@/components/ClickSpark/ClickSpark.tsx'
 import Dock from "@/components/Dock/Dock.tsx"
-import {CollectionCard} from "@/components/CollectionCard/CollectionCard.tsx"
-import {createCollection} from '@/lib/collections/actions.ts'
-import {Collection} from '@/lib/types/Collection.ts'
-import {Item} from '@/lib/types/Item.ts'
-import {NAV_ITEMS} from "@/lib/constants/navigation.tsx";
+import {CreateCollectionForm} from "@/components/CreateCollectionForm/CreateCollectionForm.tsx"
+import {CollectionsList} from "@/components/CollectionsList/CollectionsList.tsx"
+import {ErrorState} from "@/components/ErrorState/ErrorState.tsx"
+import {Loading} from "@/components/Loading/Loading"
+import {useCollectionsData} from "@/lib/hooks/useCollectionsData.ts"
+import {NAV_ITEMS} from "@/lib/constants/navigation.tsx"
 
-interface CollectionsPageProps {
-    initialCollections: Collection[]
-    initialItems: Item[] // Добавляем items для подсчета статистики
-}
-
-// Основная страница коллекций
-const CollectionsPage: React.FC<CollectionsPageProps> = ({initialCollections, initialItems}) => {
+const CollectionsPage: React.FC = () => {
     const router = useRouter()
-    const [state, formAction] = React.useActionState(createCollection, null)
-    const [isSubmitting, setIsSubmitting] = React.useState(false)
+    const {
+        collections,
+        items,
+        isLoading,
+        error,
+        refreshCollections,
+        refetch
+    } = useCollectionsData()
 
-    // Локальное состояние для формы
-    const formRef = React.useRef<HTMLFormElement>(null)
+    const navItems = React.useMemo(() =>
+            NAV_ITEMS.map(item => ({
+                ...item,
+                onClick: item.onClick(router)
+            })),
+        [router]
+    )
 
-    // Обрабатываем успешное создание
-    React.useEffect(() => {
-        if (state?.success) {
-            formRef.current?.reset()
-            setIsSubmitting(false)
-        } else if (state?.error) {
-            setIsSubmitting(false)
-        }
-    }, [state])
-
-    const handleSubmit = async (formData: FormData) => {
-        setIsSubmitting(true)
-        formAction(formData)
+    // Если ошибка загрузки - показываем fallback
+    if (!isLoading && error) {
+        return (
+            <div className={styles['page']}>
+                <div className={styles['main-board']}>
+                    <ErrorState
+                        title="Unable to load collections"
+                        message={error}
+                        onRetry={refetch}
+                    />
+                </div>
+            </div>
+        )
     }
-
 
     return (
         <>
-            <Dock
-                items={NAV_ITEMS.map(item => ({
-                    ...item,
-                    onClick: item.onClick(router)
-                }))}
-                panelHeight={68}
-                baseItemSize={50}
-                magnification={70}
+            <Loading
+                isInitialized={!isLoading}
+                text="Loading collections..."
             />
-            <ClickSpark
-                sparkColor='#fff'
-                sparkSize={10}
-                sparkRadius={15}
-                sparkCount={8}
-                duration={400}
-            >
-                <div className={styles['page']}>
-                    <div className={styles['main-board']}>
-                        <div className={styles['collections-header']}>
-                            <h1>Your Collections</h1>
-                            <p>Manage and organize your items</p>
-                        </div>
 
-                        {/* Форма создания новой коллекции */}
-                        <div className={styles['create-collection']}>
-                            <h2>Create New Collection</h2>
-                            <form ref={formRef} action={handleSubmit} className={styles['create-form']}>
-                                <div className={styles['form-group']}>
-                                    <input
-                                        type="text"
-                                        name="name"
-                                        placeholder="Collection name"
-                                        disabled={isSubmitting}
-                                        required
+            {!isLoading && (
+                <>
+                    <Dock
+                        items={navItems}
+                        panelHeight={68}
+                        baseItemSize={50}
+                        magnification={70}
+                    />
+                    <ClickSpark
+                        sparkColor='#fff'
+                        sparkSize={10}
+                        sparkRadius={15}
+                        sparkCount={8}
+                        duration={400}
+                    >
+                        <div className={styles['page']}>
+                            <div className={styles['main-board']}>
+                                <header className={styles['collections-header']}>
+                                    <h1>Your Collections</h1>
+                                    <p>Manage and organize your items</p>
+                                </header>
+
+                                <CreateCollectionForm onSuccess={refreshCollections} />
+
+                                <section className={styles['collections-section']}>
+                                    <CollectionsList
+                                        collections={collections}
+                                        items={items}
+                                        className={styles['collections-list']}
                                     />
-                                </div>
-                                <div className={styles['form-group']}>
-                  <textarea
-                      name="description"
-                      placeholder="Description (optional)"
-                      disabled={isSubmitting}
-                      rows={3}
-                  />
-                                </div>
-                                <button
-                                    type="submit"
-                                    disabled={isSubmitting}
-                                    className={styles['create-button']}
-                                >
-                                    {isSubmitting ? 'Creating...' : 'Create Collection'}
-                                </button>
-
-                                {/* Показываем ошибки */}
-                                {state?.error && (
-                                    <div className={styles['error-message']}>
-                                        {state.error}
-                                    </div>
-                                )}
-                            </form>
+                                </section>
+                            </div>
                         </div>
-
-                        {/* Список коллекций */}
-                        <div className={styles['collections-section']}>
-                            <h2>Your Collections ({initialCollections.length})</h2>
-
-                            {initialCollections.length > 0 ? (
-                                <div className={styles['collections-grid']}>
-                                    {initialCollections.map(collection => (
-                                        <CollectionCard
-                                            key={collection.id}
-                                            collection={collection}
-                                            items={initialItems}
-                                        />
-                                    ))}
-                                </div>
-                            ) : (
-                                <div className={styles['empty-state']}>
-                                    <div className={styles['empty-icon']}>📚</div>
-                                    <h3>No collections yet</h3>
-                                    <p>Create your first collection to start organizing your items!</p>
-                                </div>
-                            )}
-                        </div>
-                    </div>
-                </div>
-            </ClickSpark>
+                    </ClickSpark>
+                </>
+            )}
         </>
     )
 }
