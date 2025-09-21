@@ -1,3 +1,4 @@
+// app/(protected)/collections/page.tsx
 "use client";
 
 import * as React from 'react'
@@ -5,12 +6,13 @@ import {useRouter} from 'next/navigation'
 import styles from './collections.module.css'
 import ClickSpark from '@/components/ClickSpark/ClickSpark.tsx'
 import Dock from "@/components/Dock/Dock.tsx"
-import {CreateCollectionForm} from "@/components/CreateCollectionForm/CreateCollectionForm.tsx"
+import {CreateCollectionForm} from "@/components/Collection/CreateCollectionForm/CreateCollectionForm.tsx"
 import {CollectionsList} from "@/components/CollectionsList/CollectionsList.tsx"
 import {ErrorState} from "@/components/ErrorState/ErrorState.tsx"
 import {Loading} from "@/components/Loading/Loading"
 import {useCollectionsData} from "@/lib/hooks/useCollectionsData.ts"
 import {NAV_ITEMS} from "@/lib/constants/navigation.tsx"
+import {PageHeader} from "@/components/PageHeader/PageHeader.tsx";
 
 const CollectionsPage: React.FC = () => {
     const router = useRouter()
@@ -70,18 +72,21 @@ const CollectionsPage: React.FC = () => {
                     >
                         <div className={styles['page']}>
                             <div className={styles['main-board']}>
-                                <header className={styles['collections-header']}>
-                                    <h1>Your Collections</h1>
-                                    <p>Manage and organize your items</p>
-                                </header>
+                                <PageHeader
+                                    title={"Your Collections"}
+                                    description="Manage and organize your items"
+                                    variant="centered"
+                                />
 
-                                <CreateCollectionForm onSuccess={refreshCollections} />
+
+                                <CreateCollectionForm onSuccess={refreshCollections}/>
 
                                 <section className={styles['collections-section']}>
                                     <CollectionsList
                                         collections={collections}
                                         items={items}
                                         className={styles['collections-list']}
+                                        onCollectionsChange={refreshCollections}
                                     />
                                 </section>
                             </div>

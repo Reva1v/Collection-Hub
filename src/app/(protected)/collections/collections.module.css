@@ -1,10 +1,9 @@
 /* Основные стили страницы */
 .page {
     min-height: 100vh;
-    padding: 2rem 1rem 6rem; /* Добавляем отступ снизу для Dock */
+    padding: 2rem 1rem 6rem;
     background: var(--background);
     color: var(--text);
-    overflow: scroll;
 }
 
 .main-board {
@@ -15,36 +14,9 @@
     gap: 2rem;
 }
 
-/* Заголовок страницы */
-.collections-header {
-    text-align: center;
-    margin-bottom: 1rem;
-}
-
-.collections-header h1 {
-    font-size: 2.5rem;
-    font-weight: 700;
-    margin-bottom: 0.5rem;
-    background: linear-gradient(135deg, var(--accent) 0%, var(--secondary) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
-.collections-header p {
-    font-size: 1.1rem;
-    opacity: 0.7;
-    margin: 0;
-}
-
 /* Секция коллекций */
 .collections-section {
     margin-top: 1rem;
-}
-
-/* Кастомные стили для списка коллекций на этой странице */
-.collections-list {
-    /* Дополнительные стили если нужны */
 }
 
 /* Анимация загрузки */
