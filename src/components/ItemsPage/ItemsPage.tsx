@@ -5,11 +5,11 @@ import { useRouter } from 'next/navigation';
 import styles from '@/components/ItemsPage/items.module.css';
 import ClickSpark from '@/components/ClickSpark/ClickSpark.tsx';
 import CardList from "@/components/CardList/CardList.tsx";
-import Header from "@/components/Header/Header.tsx";
 import Dock from "@/components/Dock/Dock.tsx";
 import {Item} from "@/lib/types/Item.ts";
 import {Collection} from "@/lib/types/Collection.ts";
 import {NAV_ITEMS} from "@/lib/constants/navigation";
+import CollectionHeader from "@/components/Collection/CollectionHeader/CollectionHeader.tsx";
 
 
 interface ItemsPageProps {
@@ -78,7 +78,7 @@ const ItemsPage: React.FC<ItemsPageProps> = ({
                 duration={400}
             >
                 <div className={styles['page']}>
-                    <Header
+                    <CollectionHeader
                         collections={collections}
                         selectedCollection={selectedCollection}
                         setSelectedCollection={setSelectedCollection}
