@@ -1,0 +1,101 @@
+/* Универсальные стили для PageHeader */
+
+.page-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding: 1.5rem 0;
+    border-bottom: 1px solid rgba(43, 43, 43, 0.3);
+}
+
+.header-content {
+    flex: 1;
+    min-width: 0; /* Предотвращает переполнение flex элемента */
+}
+
+.header-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem 0;
+    line-height: 1.2;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--secondary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.header-description {
+    font-size: 1.1rem;
+    color: var(--text);
+    opacity: 0.7;
+    margin: 0;
+    line-height: 1.5;
+    max-width: 42rem; /* Ограничиваем ширину для лучшей читаемости */
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-shrink: 0;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .page-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+        padding: 1rem 0;
+    }
+
+    .header-title {
+        font-size: 2rem;
+    }
+
+    .header-actions {
+        justify-content: flex-start;
+        flex-wrap: wrap;
+    }
+}
+
+@media (max-width: 480px) {
+    .header-title {
+        font-size: 1.5rem;
+    }
+
+    .header-description {
+        font-size: 0.9rem;
+    }
+
+    .header-actions {
+        gap: 0.5rem;
+    }
+}
+
+/* Варианты стилей */
+.page-header.centered {
+    text-align: center;
+    flex-direction: column;
+    align-items: center;
+    border-bottom: none;
+}
+
+.page-header.centered .header-content {
+    text-align: center;
+}
+
+.page-header.compact {
+    margin-bottom: 1rem;
+    padding: 1rem 0;
+}
+
+.page-header.compact .header-title {
+    font-size: 1.5rem;
+    margin-bottom: 0.25rem;
+}
+
+.page-header.compact .header-description {
+    font-size: 0.9rem;
+}
