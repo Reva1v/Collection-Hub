@@ -1,7 +1,11 @@
+// components/CollectionsList/CollectionsList.tsx
 import * as React from 'react'
-import {CollectionCard} from '@/components/CollectionCard/CollectionCard.tsx'
-import {Collection} from '@/lib/types/Collection.ts'
-import {Item} from '@/lib/types/Item.ts'
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { CollectionCard } from '@/components/Collection/CollectionCard/CollectionCard.tsx'
+import { deleteCollection } from '@/lib/collections/actions'
+import { Collection } from '@/lib/types/Collection.ts'
+import { Item } from '@/lib/types/Item.ts'
 import styles from './CollectionsList.module.css'
 
 interface Props {
@@ -9,14 +13,47 @@ interface Props {
     items: Item[]
     showHeader?: boolean
     className?: string
+    onCollectionsChange?: () => void // Callback для обновления списка
 }
 
 export const CollectionsList: React.FC<Props> = ({
                                                      collections,
                                                      items,
                                                      showHeader = true,
-                                                     className
+                                                     className,
+                                                     onCollectionsChange
                                                  }) => {
+    const [deletingCollections, setDeletingCollections] = useState<Set<string>>(new Set())
+    const router = useRouter()
+
+    const handleEdit = (collection: Collection) => {
+        // Перенаправляем на страницу редактирования
+        router.push(`/collections/${collection.id}/edit`)
+    }
+
+    const handleDelete = async (collectionId: string) => {
+        if (deletingCollections.has(collectionId)) return
+
+        setDeletingCollections(prev => new Set(prev).add(collectionId))
+
+        try {
+            await deleteCollection(collectionId)
+            // После успешного удаления обновляем список
+            if (onCollectionsChange) {
+                onCollectionsChange()
+            }
+        } catch (error) {
+            console.error('Failed to delete collection:', error)
+            // Можно добавить toast уведомление об ошибке
+        } finally {
+            setDeletingCollections(prev => {
+                const next = new Set(prev)
+                next.delete(collectionId)
+                return next
+            })
+        }
+    }
+
     if (collections.length === 0) {
         return (
             <div className={`${styles['empty-state']} ${className || ''}`}>
@@ -40,6 +77,9 @@ export const CollectionsList: React.FC<Props> = ({
                         key={collection.id}
                         collection={collection}
                         items={items}
+                        onEdit={() => handleEdit(collection)}
+                        onDelete={() => handleDelete(collection.id)}
+                        isDeleting={deletingCollections.has(collection.id)}
                     />
                 ))}
             </div>

@@ -1,0 +1,299 @@
+/* components/CollectionActions/CollectionActions.module.css */
+
+/* Dropdown variant */
+.dropdown-container {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-trigger {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 8px;
+    padding: 8px;
+    cursor: pointer;
+    color: var(--text);
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.dropdown-trigger:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: var(--text);
+    transform: scale(1.05);
+}
+
+.dropdown-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 999;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: 4px;
+    background: var(--background);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 8px;
+    min-width: 190px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    animation: slideDown 0.2s ease-out;
+}
+
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 12px 16px;
+    border: none;
+    background: transparent;
+    color: var(--text);
+    cursor: pointer;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.dropdown-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text);
+}
+
+.dropdown-item.delete {
+    color: rgba(255, 99, 99, 0.9);
+}
+
+.dropdown-item.delete:hover {
+    background: rgba(255, 99, 99, 0.1);
+    color: #ff6363;
+}
+
+/* Buttons variant */
+.buttons-container {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.action-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 8px;
+    padding: 10px;
+    cursor: pointer;
+    color: var(--text);
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+}
+
+.action-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: var(--text);
+    transform: translateY(-1px);
+}
+
+.action-btn.delete {
+    color: rgba(255, 99, 99, 0.8);
+}
+
+.action-btn.delete:hover {
+    background: rgba(255, 99, 99, 0.1);
+    color: #ff6363;
+}
+
+/* Floating variant */
+.floating-container {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 100;
+}
+
+.floating-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.floating-btn {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    border: none;
+    background: var(--background);
+    backdrop-filter: blur(20px);
+    color: rgba(255, 255, 255, 0.9);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.floating-btn:hover {
+    transform: scale(1.1);
+    background: var(--background);
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.4);
+}
+
+.floating-btn.delete {
+    background: rgba(255, 99, 99, 0.1);
+    color: #ff6363;
+}
+
+.floating-btn.delete:hover {
+    background: rgba(255, 99, 99, 0.2);
+}
+
+/* Modal styles */
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    z-index: 1001;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.2s ease-out;
+    border-radius: 16px;
+}
+
+.confirm-modal {
+    background: var(--background);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 24px;
+    max-width: 400px;
+    width: 90%;
+    animation: scaleIn 0.2s ease-out;
+    cursor: auto;
+}
+
+.confirm-modal h3 {
+    margin: 0 0 12px 0;
+    color: white;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.confirm-modal p {
+    margin: 0 0 8px 0;
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.5;
+}
+
+.warning {
+    color: rgba(255, 99, 99, 0.8) !important;
+    font-size: 14px;
+    margin-bottom: 24px !important;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+}
+
+.cancel-btn, .delete-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.cancel-btn {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text);
+}
+
+.cancel-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: var(--text);
+}
+
+.delete-btn {
+    background: #ff4757;
+    color: var(--text);
+}
+
+.delete-btn:hover:not(:disabled) {
+    background: #ff3742;
+}
+
+.delete-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Animations */
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .floating-container {
+        bottom: 16px;
+        right: 16px;
+    }
+
+    .floating-btn {
+        width: 48px;
+        height: 48px;
+    }
+
+    .confirm-modal {
+        margin: 16px;
+        width: calc(100% - 32px);
+    }
+}

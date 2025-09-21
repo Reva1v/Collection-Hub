@@ -1,10 +1,10 @@
 "use client";
 
-import styles from "./Header.module.css";
+import styles from "./CollectionHeader.module.css";
 import type {FC} from "react";
-import FilterByType from "../FilterByType/FilterByType";
-import {Collection} from "@/lib/types/Collection";
-import {Item} from "@/lib/types/Item";
+import FilterByType from "../../FilterByType/FilterByType.tsx";
+import {Collection} from "@/lib/types/Collection.ts";
+import {Item} from "@/lib/types/Item.ts";
 import {CollectionWithItems} from "@/lib/types/Collection.ts";
 
 interface HeaderProps {
@@ -18,7 +18,7 @@ interface HeaderProps {
     filteredItems: Item[];
 }
 
-const Header: FC<HeaderProps> = ({
+const CollectionHeader: FC<HeaderProps> = ({
                                      showNav = false,
                                      collections,
                                      selectedCollection,
@@ -56,4 +56,4 @@ const Header: FC<HeaderProps> = ({
     );
 };
 
-export default Header;
+export default CollectionHeader;
